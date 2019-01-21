@@ -15,12 +15,6 @@ def uniConvert(uniData):
 def mostOften(lst):
     return max(lst, key=lst.count)
 
-
-# Note everything is in unicode
-# print rawData[0]
-# print rawData[0].keys()
-# print rawData[0]['text']
-
 hostTweets = [uniConvert(tweet['text']) for tweet in rawData if 'host' in tweet['text']]
 capitalWordsHostTweets = [re.findall('([A-Z][a-z]+)', tweet) for tweet in hostTweets]
 hostCapitalWords = [word for words in capitalWordsHostTweets for word in words]
