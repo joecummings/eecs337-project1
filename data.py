@@ -7,7 +7,7 @@ import regex as re
 def uniConvert(uniData):
     return unicodedata.normalize('NFKD', uniData).encode('ascii','ignore')
 
-def mostOften(lst):
+def mostCommon(lst):
     return max(lst,key=lst.count)
 
 def lstToCount(src):
@@ -16,16 +16,27 @@ def lstToCount(src):
 def relevantData(pred,key,data):
     return [uniConvert(tweet[key]) for tweet in data if pred(tweet[key])]
 
-def relTweets(pred,data):
+def gatherTweets(pred,data):
     return relevantData(pred,'text',data)
 
-#Predicates and Lists (so they don't get out of place)
+def mostCommonString(regexPattern,tweets):
+    return mostCommon([filteredString for tweet in tweets for filteredString in re.findall(regexPattern, tweet)])
 
-hostPred = (lambda x: 'host' in x and 'RT' not in x)
+def makePred(l1,l2):
+    localPreds = map(lambda x: lambda y: x in y,l1) + map(lambda x: lambda y: x not in y,l2)
+    return lambda x: all([f(x) for f in localPreds])
+    
+    
+
+#Predicates and Lists (so they don't get out of place)
+hostPred = makePred(['host'],['RT'])
 hostTweets = []
 
-tvDramaPred = (lambda x: 'RT' not in x and 'drama' in x and 'win' in x and 'television' in x)
+tvDramaPred = makePred(['drama','win','television'],['RT'])
 tvDramaTweets = []
+
+supportingTVActorPred = makePred(['best supporting actor','win'],['RT'])
+supportingTVActorTweets = []
 
 #Body / Main
 fileName = "gg2013.json"
@@ -42,13 +53,12 @@ for tweetDict in rawData:
     if tvDramaPred(tweet):
         tvDramaTweets.append(tweet)
 
-namesOfHostTweets = [ re.findall('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)', tweet) for tweet in hostTweets]
-hostNames = [name for names in namesOfHostTweets for name in names]
-print mostOften(hostNames)
+    if supportingTVActorPred(tweet):
+        supportingTVActorTweets.append(tweet)
 
-tvDramaNames = [ re.findall('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)', tweet) for tweet in tvDramaTweets]
-tvDramaNamesFlattened = [name for names in tvDramaNames for name in names]
-print mostOften(tvDramaNamesFlattened) #this will come close though!
+print mostCommonString('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)',supportingTVActorTweets)
+print mostCommonString('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)',hostTweets)
+print mostCommonString('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)',tvDramaTweets)
 
 
 #Key Lessons - overlap between categories is bad - RT's kill us - this is how confident we are / have some description of our metric
@@ -106,6 +116,14 @@ print mostOften(tvDramaNamesFlattened) #this will come close though!
 # movieComedy
 
 # movieDrama   #
+
+
+# def makeInPred(lst):
+#     return map(lambda x: lambda y: x in y,lst) 
+
+# def makeNotInPred(lst):
+#     return map(lambda x: lambda y: x not in y,lst)
+
 
 
 
