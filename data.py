@@ -2,32 +2,46 @@
 import json
 import unicodedata
 import regex as re
+from nltk import ne_chunk, pos_tag, word_tokenize
+from nltk.tree import Tree
+import pdb
 
-#Helper Functions
-def uniConvert(uniData):
-    return unicodedata.normalize('NFKD', uniData).encode('ascii','ignore')
+#Imagine awardshow is a list of awards that is imported
+def main():
+    fileName = "gg2013.json"
 
-def mostCommon(lst):
-    return max(lst,key=lst.count)
-
-def lstToCount(src):
-    return dict([ (i, src.count(i)) for i in set(src)])
-
-def relevantData(pred,key,data):
-    return [uniConvert(tweet[key]) for tweet in data if pred(tweet[key])]
-
-def gatherTweets(pred,data):
-    return relevantData(pred,'text',data)
-
-def mostCommonString(regexPattern,tweets):
-    return mostCommon([filteredString for tweet in tweets for filteredString in re.findall(regexPattern, tweet)])
-
-def makePred(l1,l2):
-    localPreds = map(lambda x: lambda y: x in y,l1) + map(lambda x: lambda y: x not in y,l2)
-    return lambda x: all([f(x) for f in localPreds])
+    with open(fileName) as data_file:
+        rawData = json.load(data_file)
     
+    for tweetDict in rawData:
+        tweet = uniConvert(tweetDict['text'])
+        for award in award_shows:
+            award.predicate(tweet)
     
 
+# def get_continuous_chunks(text):
+#      chunked = ne_chunk(pos_tag(word_tokenize(text)))
+#      continuous_chunk = []
+#      current_chunk = []
+#      for i in chunked:
+#         if type(i) == Tree:
+#             current_chunk.append(" ".join([token for token, pos in i.leaves()]))
+#         elif current_chunk:
+#             named_entity = " ".join(current_chunk)
+#             if named_entity not in continuous_chunk:
+#                 continuous_chunk.append(named_entity)
+#                 current_chunk = []
+#         else:
+#             continue
+#      named_entity = " ".join(current_chunk)
+#      if named_entity not in continuous_chunk:
+#          continuous_chunk.append(named_entity)
+#          current_chunk = []
+#      return continuous_chunk
+# s2 = 'Peter was in Nebraska and the Shift Series national conference, Compass Partners and fashion designer Kenneth Cole Banana Boat'
+# print get_continuous_chunks(s2)
+# pdb.set_trace()
+    
 #Predicates and Lists (so they don't get out of place)
 hostPred = makePred(['host'],['RT'])
 hostTweets = []
@@ -38,11 +52,11 @@ tvDramaTweets = []
 supportingTVActorPred = makePred(['best supporting actor','win'],['RT'])
 supportingTVActorTweets = []
 
-#Body / Main
-fileName = "gg2013.json"
+bestPictureComedyPred = makePred(['best','picture','motion','comedy'],['RT'])
+bestPictureTweets = []
 
-with open(fileName) as data_file:
-    rawData = json.load(data_file)
+#Body / Main
+
 
 for tweetDict in rawData:
     tweet = uniConvert(tweetDict['text'])
@@ -56,6 +70,10 @@ for tweetDict in rawData:
     if supportingTVActorPred(tweet):
         supportingTVActorTweets.append(tweet)
 
+    if bestPictureComedyPred(tweet):
+        bestPictureTweets.append(tweet)
+
+print mostCommonString('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)',bestPictureTweets)
 print mostCommonString('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)',supportingTVActorTweets)
 print mostCommonString('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)',hostTweets)
 print mostCommonString('([A-Z][\w-]*(?:\s+[A-Z][\w-]*)+)',tvDramaTweets)
