@@ -6,7 +6,7 @@ from award import *
 import time
 
 def main():
-    time = time.time()
+    now = time.time()
     fileName = 'gg2013.json'
     awards = list()
 
@@ -27,8 +27,8 @@ def main():
         new_award.getWinner()
         awards.append(new_award)
     
-    print(time.time() - time)
-    print(awards)
+    print(time.time() - now)
+    print([(a.winner, a.name) for a in awards])
             
 if __name__ == "__main__":
     main()
