@@ -5,3 +5,7 @@ RT
 tvDrama
 drama,tv
 RT,actor,actress,actriz
+
+supportingTvActor
+supporting actor,win
+RT
