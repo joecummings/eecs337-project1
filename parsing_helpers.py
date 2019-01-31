@@ -9,6 +9,8 @@ def parse_predicates(p_file):
     r_expr = re.compile('\w+')
     count = 0
     for line in p_file:
+        if line[0] == '#':
+            continue
         if count == 0:
             name = re.findall(r_expr, line)[0]
             newPred = Predicate(name)

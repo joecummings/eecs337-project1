@@ -1,71 +1,61 @@
-#List of predicates for use in NLP Project 1:
-#General Award Show Facts:
-"""
-	Host: [hosting, ]
-	Dressed: [outfit, look, suit, dress, wearing, red carpet]
-	Best Dressed specific: [stylish, trendy, gorgeous, handsome, stunning, 	shocking]
-	Worst Dressed specifc: [awful, ugly, gross]
-
-Category Specific: 
-Likely need to run searches specifically excluding mentions of  depending on the category:
-	 	comedy/drama
-	 	television/motion picture/limited series/picture
-	 	actor/actress, in a 
-	 	supporting/[leading for oscars]
-	 	
-
-	Award: [Best]
-	Presenter(s): [presenter, presented by, funny, presenting]
-	Nominees: [nominated, race between]
-	Winner: [wins, won, (?)]
-"""
-#Name line, Include line, disclude line, two blank lines to indicate new Category.
-#GOLDEN GLOBES AWARDS: Winner should be top result, nominees top 5
-
+# List of predicates for use in NLP Project 1:
+# General Award Show Facts:
+#
+#	Host: [hosting, ]
+#	Dressed: [outfit, look, suit, dress, wearing, red carpet]
+#	Best Dressed specific: [stylish, trendy, gorgeous, handsome, stunning, 	shocking]
+#	Worst Dressed specifc: [awful, ugly, gross]
+#
+# Category Specific: 
+# Likely need to run searches specifically excluding mentions of  depending on the category:
+#	 	comedy/drama
+#	 	television/motion picture/limited series/picture
+#	 	actor/actress, in a 
+#	 	supporting/[leading for oscars]
+#	 	
+#
+#	Award: [Best]
+#	Presenter(s): [presenter, presented by, funny, presenting]
+#	Nominees: [nominated, race between]
+#	Winner: [wins, won, (?)]
+#
+# Name line, Include line, disclude line, two blank lines to indicate new Category.
+# GOLDEN GLOBES AWARDS: Winner should be top result, nominees top 5
 Host
 hosting, funny, monologue, opener, jokes
 Null
-
 
 Best Motion Picture - Drama
 Best, Drama, Movie, Motion Picture
 Television, Musical, Comedy, TV
 
-
 Best Motion Picture - Musical or Comedy
 Best, Musical, Comedy, Movie, Motion Picture
 Television, Drama, TV
-
 
 Best Performance by an Actress in a Motion Picture - Drama
 Best, Drama, Actress, Movie, Motion Picture
 Television, Actor, Comedy, Musical
 
-
 Best Performance by an Actor in a Motion Picture - Drama
 Best, Drama, Actor, Movie, Motion Picture
 Television, Actress, Comedy, Musical
-
 
 Best Performance by an Actress in a Motion Picture - Musical or Comedy
 Best, Comedy, Musical, Actress, Movie, Motion Picture
 Television, Actor, Drama
 
-
 Best Performance by an Actor in a Motion Picture - Musical or Comedy
 Best, Comedy, Musical, Actor, Movie, Motion Picture
 Television, Actress, Drama
-
 
 Best Performance by an Actress in a Supporting Role in any Motion Picture
 Best, Supporting, Actress, Movie, Motion Picture
 Television, Actor
 
-
 Best Performance by an Actor in a Supporting Role in any Motion Picture
 Best, Supporting, Actor, Movie, Motion Picture
 Television, Actress
-
 
 Best Director - Motion Picture
 Best, Director, Movie, Motion Picture, Directing
@@ -75,16 +65,13 @@ Best Screenplay - Motion Picture
 Best, Screenplay, Movie, Motion Picture, Writing
 Television
 
-
 Best Motion Picture - Animated
 Best, Animated, Movie, Motion Picture
 Television
 
-
 Best Motion Picture - Foreign Language
 Best, Foreign, Foreign Language, Movie, Motion Picture
 Television
-
 
 Best Original Score - Motion Picture
 Best, Score, Movie, Motion Picture, Music
@@ -94,64 +81,51 @@ Best Original Song - Motion Picture
 Best, Song, Movie, Motion Picture
 Television
 
-
 Best Television Series - Drama
 Best, TV, Television, Drama
 Movie, Motion Picture, Comedy, Musical
-
 
 Best Television Series - Musical or Comedy
 Best, TV, Television, Musical or Comedy
 Drama, Movie, Motion Picture
 
-
 Best Television Limited Series or Motion Picture Made for Television
 Best, Made for Televion, Limited Series, Series
 Null
-
 
 Best Performance by an Actress in a Limited Series or a Motion Picture Made for Television
 Best, Actress, Made for Television, Series
 Supporting, Actor
 
-
 Best Performance by an Actor in a Limited Series or a Motion Picture Made for Television
 Best, Actor, Made for Television, Series
 Supporting, Actress
-
 
 Best Performance by an Actress In A Television Series - Drama
 Best, Actress, Television, TV, Drama
 Actor, Motion Picture, Movie, Comedy, Musical
 
-
 Best Performance by an Actor In A Television Series - Drama
 Best, Actor, Television, TV, Drama
 Actress, Motion Picture, Movie, Comedy, Musical
-
 
 Best Performance by an Actress in a Television Series - Musical or Comedy
 Best, Actress, Television, TV, Comedy, Musical
 Drama, Actor, Motion Picture, Movie
 
-
 Best Performance by an Actor in a Television Series - Musical or Comedy
 Best, Actor, Television, TV, Comedy, Musical
 Drama, Actress, Motion Picture, Movie
-
 
 Best Performance by an Actress in a Supporting Role in a Series, Limited Series or Motion Picture Made for Television
 Best, Actress, Supporting, Made for Television, Series
 Leading, Actress
 
-
 Best Performance by an Actor in a Supporting Role in a Series, Limited Series or Motion Picture Made for Television
 Best, Actor, Supporting, Made for Television, Series
 Leading, Actress
 
-
-##GOLDEN GLOBE PRESENTERS: THIS IS THE SAME AS THE ABOVE BUT WITH SOME PRESENTOR PREDICATES ADDED ON {presented by, presenting, presents, funny, presenter}
-
+## GOLDEN GLOBE PRESENTERS: THIS IS THE SAME AS THE ABOVE BUT WITH SOME PRESENTOR PREDICATES ADDED ON {presented by, presenting, presents, funny, presenter} ##
 Best Motion Picture - Drama
 Best, Drama, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television, Musical, Comedy, TV
@@ -160,36 +134,29 @@ Best Motion Picture - Musical or Comedy
 Best, Musical, Comedy, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television, Drama, TV
 
-
 Best Performance by an Actress in a Motion Picture - Drama
 Best, Drama, Actress, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television, Actor, Comedy, Musical
-
 
 Best Performance by an Actor in a Motion Picture - Drama
 Best, Drama, Actor, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television, Actress, Comedy, Musical
 
-
 Best Performance by an Actress in a Motion Picture - Musical or Comedy
 Best, Comedy, Musical, Actress, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television, Actor, Drama
-
 
 Best Performance by an Actor in a Motion Picture - Musical or Comedy
 Best, Comedy, Musical, Actor, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television, Actress, Drama
 
-
 Best Performance by an Actress in a Supporting Role in any Motion Picture
 Best, Supporting, Actress, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television, Actor
 
-
 Best Performance by an Actor in a Supporting Role in any Motion Picture
 Best, Supporting, Actor, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television, Actress
-
 
 Best Director - Motion Picture
 Best, Director, Movie, Motion Picture, Directing, presented by, presenting, presents, funny, presenter
@@ -199,16 +166,13 @@ Best Screenplay - Motion Picture
 Best, Screenplay, Movie, Motion Picture, Writing, presented by, presenting, presents, funny, presenter
 Television
 
-
 Best Motion Picture - Animated
 Best, Animated, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television
 
-
 Best Motion Picture - Foreign Language
 Best, Foreign, Foreign Language, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television
-
 
 Best Original Score - Motion Picture
 Best, Score, Movie, Motion Picture, Music, presented by, presenting, presents, funny, presenter
@@ -218,78 +182,55 @@ Best Original Song - Motion Picture
 Best, Song, Movie, Motion Picture, presented by, presenting, presents, funny, presenter
 Television
 
-
 Best Television Series - Drama
 Best, TV, Television, Drama, presented by, presenting, presents, funny, presenter
 Movie, Motion Picture, Comedy, Musical
-
 
 Best Television Series - Musical or Comedy
 Best, TV, Television, Musical or Comedy, presented by, presenting, presents, funny, presenter
 Drama, Movie, Motion Picture
 
-
 Best Television Limited Series or Motion Picture Made for Television
 Best, Made for Televion, Limited Series, Series, presented by, presenting, presents, funny, presenter
 Null
-
 
 Best Performance by an Actress in a Limited Series or a Motion Picture Made for Television
 Best, Actress, Made for Television, Series, presented by, presenting, presents, funny, presenter
 Supporting, Actor
 
-
 Best Performance by an Actor in a Limited Series or a Motion Picture Made for Television
 Best, Actor, Made for Television, Series, presented by, presenting, presents, funny, presenter
 Supporting, Actress
-
 
 Best Performance by an Actress In A Television Series - Drama
 Best, Actress, Television, TV, Drama, presented by, presenting, presents, funny, presenter
 Actor, Motion Picture, Movie, Comedy, Musical
 
-
 Best Performance by an Actor In A Television Series - Drama
 Best, Actor, Television, TV, Drama, presented by, presenting, presents, funny, presenter
 Actress, Motion Picture, Movie, Comedy, Musical
-
 
 Best Performance by an Actress in a Television Series - Musical or Comedy
 Best, Actress, Television, TV, Comedy, Musical, presented by, presenting, presents, funny, presenter
 Drama, Actor, Motion Picture, Movie
 
-
 Best Performance by an Actor in a Television Series - Musical or Comedy
 Best, Actor, Television, TV, Comedy, Musical, presented by, presenting, presents, funny, presenter
 Drama, Actress, Motion Picture, Movie
-
 
 Best Performance by an Actress in a Supporting Role in a Series, Limited Series or Motion Picture Made for Television
 Best, Actress, Supporting, Made for Television, Series, presented by, presenting, presents, funny, presenter
 Leading, Actress
 
-
 Best Performance by an Actor in a Supporting Role in a Series, Limited Series or Motion Picture Made for Television
 Best, Actor, Supporting, Made for Television, Series, presented by, presenting, presents, funny, presenter
 Leading, Actress
 
-
-#### Best Dressed, where we will put other A-level questions
+## Best Dressed, where we will put other A-level questions ##
 Best Dressed
 outfit, look, suit, dress, wearing, red carpet, stylish, trendy, gorgeous, handsome, stunning, shocking
 awful, ugly, gross
 
-
 Worst Dressed
 outfit, look, suit, dress, wearing, red carpet, awful, ugly, gross, shocking
 stylish, trendy, gorgeous, handsome, stunning
-
-
-Preexisting notes from meeting Sunday 1/27/18:::
-Host:
-host
-RT
-
-tvDrama
-drama,tv
-RT,actor,actress,actriz
