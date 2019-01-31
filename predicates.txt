@@ -22,12 +22,12 @@
 # Name line, Include line, disclude line, two blank lines to indicate new Category.
 # GOLDEN GLOBES AWARDS: Winner should be top result, nominees top 5
 Host
-hosting, funny, monologue, opener, jokes
-Null
+hosting,funny,monologue,opener,jokes
+Null,RT
 
 Best Motion Picture - Drama
 Best, Drama, Movie, Motion Picture
-Television, Musical, Comedy, TV
+Television, Musical, Comedy, TV, RT
 
 Best Motion Picture - Musical or Comedy
 Best, Musical, Comedy, Movie, Motion Picture
