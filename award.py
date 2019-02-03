@@ -6,14 +6,46 @@ class Award(object):
     def __init__(self, Predicate):
         self.name = Predicate.name
         self.relevant_tweets = list()
-        self.predicate = Predicate.pred
+        self.include = Predicate.include
+        self.exclude = Predicate.exclude
         self.nominees = list()
         self.stop_words = ['goldenglobes','golden','globes','','golden globes', 'tv', 'rt']
         self.winner = ''
 
     def relevantHa(self, tweet):
-        if self.predicate(tweet):
+
+        relevavantBool = True
+        delimiter = ','
+
+        for local_or_string in self.include:
+
+            if not relevavantBool:
+                break
+
+            localBool = False
+            for word in local_or_string.split(delimiter):
+                if word in tweet:
+                    localBool = True
+                    break
+            
+            relevavantBool = relevavantBool and localBool
+
+        for local_or_string in self.exclude:
+
+            if not relevavantBool:
+                break
+
+            localBool = False
+            for word in local_or_string.split(delimiter):
+                if word not in tweet:
+                    localBool = True
+                    break
+            
+            relevavantBool = relevavantBool and localBool
+
+        if relevavantBool:
             self.relevant_tweets.append(tweet)
+            
 
     def tweetsToNouns(self, tweets):
         proper_nouns = [self.getProperNouns(tweet) for tweet in tweets]
