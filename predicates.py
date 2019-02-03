@@ -8,12 +8,18 @@ class Predicate(object):
 
     
     def makePred(self):
-        anyFunctions = []
-        for local_or_string in self.include
-            anyFunctions.append(lambda x: any(map(lambda y: lambda x: y in x,local_or_string.split(','))))
-        for local_or_string in self.exclude            
-            anyFunctions.append(lambda x: any(map(lambda y: lambda x: y not in x,local_or_string.split(','))))
-        self.pred = lambda x: all(f(x) for f in anyFunctions)
+        self.pred = lambda x: x
+        # anyFunctions = []
+
+        # for local_or_string in self.include:
+        #     localAny = list(map(lambda y: lambda x: y in x,local_or_string.split(',')))
+        #     anyFunctions.append(lambda x: any(f(x) for f in localAny))
+
+        # for local_or_string in self.exclude:      
+        #     localAny = list(map(lambda y: lambda x: y not in x,local_or_string.split(',')))
+        #     anyFunctions.append(lambda x: any(f(x) for f in localAny))     
+
+        # self.pred = lambda x: all(f(x) for f in anyFunctions)
 
 
         # for each thing needs to return a function that has to return True

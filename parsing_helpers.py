@@ -7,7 +7,7 @@ from predicates import *
 
 def p_predicates(p_file):
 
-    with open(p_file) as content_file:
+    with open(p_file, 'r') as content_file:
         predicates_content = content_file.read()
     preds_by_line = [pred.split('\n') for pred in predicates_content.split('\n\n') ]
     

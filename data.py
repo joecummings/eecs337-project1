@@ -10,8 +10,7 @@ def main():
     fileName = 'gg2013.json'
     awards = list()
 
-    with open('predicates.txt') as p_file:
-        predicates = parse_predicates(p_file)
+    predicates = p_predicates('predicates.txt')
 
     with open(fileName) as data_file:
         rawData = json.load(data_file)
