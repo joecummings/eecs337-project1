@@ -9,7 +9,7 @@ class Award(object):
         self.include = Predicate.include
         self.exclude = Predicate.exclude
         self.nominees = list()
-        self.stop_words = ['goldenglobes','golden','globes','','golden globes', 'tv', 'rt']
+        self.stop_words = ['goldenglobes','golden','globes','','golden globes', 'tv', 'rt','i','the']
         self.winner = ''
 
     def relevantHa(self, tweet):
