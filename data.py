@@ -6,9 +6,19 @@ from award import *
 import time
 from PIL import Image
 from google_images_download import google_images_download 
+import csv
 
 #might want to include host in here?
-def makeExtraPredicates():
+def makeAwardListPredicates():
+    award_include = ['golden globes,critics choice,screen actors,academy awards,emmy,producers guild,directors guild,writers guild']
+    award_exclude = ['RT']
+    #Name is important
+    predicates = [Predicate('Award Show')]
+    predicates[0].include = award_include
+    predicates[0].exclude = award_exclude
+    return predicates, len(predicates)
+
+def makeDressedPredicates():
     bestInclude = ['best,great,incredible','dress,dressed,clothing']
     bestExclude = ['RT']
     worstInclude = ['worst,terrible,gross','dress,dressed,clothing']
@@ -22,18 +32,27 @@ def makeExtraPredicates():
 
 def main():
     now = time.time()
-    fileName = 'gg2013.json'
+    data_file_name = 'gg2013.json'
+    categories_file_name = 'ggCategories.csv'
     awards = list()
 
-    predicates = p_predicates('predicates.txt')
-    extra_predicates, len_extra_predicates = makeExtraPredicates()
-    predicates = predicates + extra_predicates
+    with open(categories_file_name, 'rb') as f:
+        predicates = [ category[0] for category in list(csv.reader(f))]
 
-    with open(fileName) as data_file:
+    # predicates = p_predicates('predicates.txt')
+    # predicates = [] # testing line
+
+    # award_list_predicates, len_award_list_predicates = makeAwardListPredicates()
+    # predicates = predicates + award_list_predicates
+
+    # dressed_predicates, len_dressed_predicates = makeDressedPredicates()
+    # predicates = predicates + dressed_predicates
+
+    with open(data_file_name) as data_file:
         rawData = json.load(data_file)
     
     for pred in predicates:
-        pred.makePred()
+        # pred.makePred()
         new_award = Award(pred)
 
         for tweetDict in rawData:
@@ -46,16 +65,16 @@ def main():
     print(time.time() - now)
     print([(a.winner, a.name) for a in awards])
 
-    for a in awards[:len_extra_predicates:-1]:
-        awardCeremonyYear = '2013'
-        keywords = a.winner + ' ' + a.name + ' '+ awardCeremonyYear
-        response = google_images_download.googleimagesdownload()
-        arguments = {
-			"keywords": keywords,
-			"limit": 1
-		}
-        paths = response.download(arguments) 
-        Image.open(paths[keywords][0]).show()
+    # for a in awards[:len_dressed_predicates:-1]:
+    #     awardCeremonyYear = '2013'
+    #     keywords = a.winner + ' ' + a.name + ' '+ awardCeremonyYear
+    #     response = google_images_download.googleimagesdownload()
+    #     arguments = {
+	# 		"keywords": keywords,
+	# 		"limit": 1
+	# 	}
+    #     paths = response.download(arguments) 
+    #     Image.open(paths[keywords][0]).show()
             
 if __name__ == "__main__":
     main()
