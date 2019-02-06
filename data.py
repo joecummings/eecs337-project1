@@ -6,9 +6,19 @@ from award import *
 import time
 from PIL import Image
 from google_images_download import google_images_download 
+import csv
 
 #might want to include host in here?
-def makeExtraPredicates():
+def makeAwardListPredicates():
+    award_include = ['golden globes,critics choice,screen actors,academy awards,emmy,producers guild,directors guild,writers guild']
+    award_exclude = ['RT']
+    #Name is important
+    predicates = [Predicate('Award Show')]
+    predicates[0].include = award_include
+    predicates[0].exclude = award_exclude
+    return predicates, len(predicates)
+
+def makeDressedPredicates():
     bestInclude = ['best,great,incredible','dress,dressed,clothing']
     bestExclude = ['RT']
     worstInclude = ['worst,terrible,gross','dress,dressed,clothing']
@@ -24,15 +34,24 @@ types = ['presenters', 'nominees', 'winner']
 
 def main():
     now = time.time()
-    fileName = 'gg2013.json'
     results = {}
+    data_file_name = 'gg2013.json'
+    categories_file_name = 'ggCategories.csv'
     awards = list()
 
-    predicates = p_predicates('predicates.txt')
-    extra_predicates, len_extra_predicates = makeExtraPredicates()
-    predicates = predicates + extra_predicates
+    with open(categories_file_name, 'rb') as f:
+        predicates = [ category[0] for category in list(csv.reader(f))]
 
-    with open(fileName) as data_file:
+    # predicates = p_predicates('predicates.txt')
+    # predicates = [] # testing line
+
+    # award_list_predicates, len_award_list_predicates = makeAwardListPredicates()
+    # predicates = predicates + award_list_predicates
+
+    # dressed_predicates, len_dressed_predicates = makeDressedPredicates()
+    # predicates = predicates + dressed_predicates
+
+    with open(data_file_name) as data_file:
         rawData = json.load(data_file)
     
     for pred in predicates:

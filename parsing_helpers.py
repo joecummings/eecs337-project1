@@ -15,8 +15,6 @@ def parseTweet(tweet):
     
     return ' '.join([x for x in init_res if x != ""])
 
-
-
 def p_predicates(p_file):
 
     with open(p_file, 'r') as content_file:
@@ -33,3 +31,12 @@ def p_predicates(p_file):
 
 def lToD(i):
     return {x: i.count(x) for x in i}
+
+def dToSubList(d):
+    retL = []
+    for key,value in d.item():
+        local_list = [(k, v) for (k, v) in D.iteritems() if key in k]
+        local_key = max(map(len, [k for (k,v) in local_list]))
+        local_value = sum([v for (k,v) in local_list])
+        retL.extend([local_value for i in range(local_key)])
+    return retL
