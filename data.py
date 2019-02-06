@@ -30,8 +30,11 @@ def makeDressedPredicates():
     predicates[1].exclude = worstExclude
     return predicates, len(predicates)
 
+types = ['presenters', 'nominees', 'winner']
+
 def main():
     now = time.time()
+    results = {}
     data_file_name = 'gg2013.json'
     categories_file_name = 'ggCategories.csv'
     awards = list()
@@ -56,25 +59,35 @@ def main():
         new_award = Award(pred)
 
         for tweetDict in rawData:
-            tweet = tweetDict['text']
+            tweet = parseTweet(tweetDict['text'])
             new_award.relevantHa(tweet)
 
-        new_award.getWinner()
-        awards.append(new_award)
+        new_award.getResults()
+        if new_award.name == 'hosts':
+            results['hosts'] = new_award.results['winner']
+        else:
+            awards.append(new_award)
+    
+    results['award_data'] = {}
+    for award in awards:
+        results['award_data'][award.name] = {}
+        for t in types:
+            results['award_data'][award.name][t] = award.results[t]
+    
+    for a in awards[:len_extra_predicates:-1]:
+        awardCeremonyYear = '2013'
+        keywords = a.winner + ' ' + a.name + ' '+ awardCeremonyYear
+        response = google_images_download.googleimagesdownload()
+        arguments = {
+			"keywords": keywords,
+			"limit": 1
+		}
+        paths = response.download(arguments) 
+        Image.open(paths[keywords][0]).show()
     
     print(time.time() - now)
-    print([(a.winner, a.name) for a in awards])
-
-    # for a in awards[:len_dressed_predicates:-1]:
-    #     awardCeremonyYear = '2013'
-    #     keywords = a.winner + ' ' + a.name + ' '+ awardCeremonyYear
-    #     response = google_images_download.googleimagesdownload()
-    #     arguments = {
-	# 		"keywords": keywords,
-	# 		"limit": 1
-	# 	}
-    #     paths = response.download(arguments) 
-    #     Image.open(paths[keywords][0]).show()
+    print(results)
+    return results
             
 if __name__ == "__main__":
     main()

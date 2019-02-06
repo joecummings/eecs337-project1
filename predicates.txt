@@ -1,16 +1,16 @@
-Host
+hosts
 host
 -
 RT
 
-Best Motion Picture - Drama
+best motion picture - drama
 best
 drama
 movie,picture
 -
 RT
 
-Best Motion Picture - Comedy
+best motion picture - comedy
 best
 comedy,musical
 movie,picture

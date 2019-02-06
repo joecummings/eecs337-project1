@@ -1,13 +1,16 @@
 import re
+from collections import Counter
 from parsing_helpers import lToD
+
 class Award(object):
 
     def __init__(self, name):
         self.name = name
         self.include, self.exclude = self.generateIncludeExclude()
         self.relevant_tweets = list()
-        # self.include = Predicate.include
-        # self.exclude = Predicate.exclude
+        self.results = {'presenters':[],
+                        'nominees':[],
+                        'winner':[]}
         self.nominees = list()
         self.stop_words = ['need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
         self.winner = ''
@@ -104,7 +107,7 @@ class Award(object):
                 currNoun = ''
         return retList
 
-    def getWinner(self):
+    def getResults(self):
 
         d = lToD(self.tweetsToNouns(self.relevant_tweets))
         for key,value in d.items():
@@ -119,11 +122,6 @@ class Award(object):
             index = v.index(max(v))
             top_five = k[index]
             v.pop(index)
-        self.winner = top_five[0]
-        self.nominees = top_five
-
-    def mostCommon(self, lst):
-        try:
-            return max(lst, key=lst.count)
-        except:
-            return ''
+            
+        self.results['winner'] = top_five[0]
+        self.results['nominees'] = top_five
