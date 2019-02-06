@@ -7,8 +7,8 @@ class Predicate(object):
         self.pred = lambda x: x
 
     
-    def makePred(self):
-        self.pred = lambda x: x
+    # def makePred(self):
+    #     self.pred = lambda x: x
         # anyFunctions = []
 
         # for local_or_string in self.include:

@@ -5,7 +5,7 @@ from parsing_helpers import *
 from award import *
 import time
 
-global types = ['presenters', 'nominees', 'winner']
+types = ['presenters', 'nominees', 'winner']
 
 def main():
     now = time.time()
@@ -19,7 +19,7 @@ def main():
         rawData = json.load(data_file)
     
     for pred in predicates:
-        pred.makePred()
+        # pred.makePred()
         new_award = Award(pred)
 
         for tweetDict in rawData:
@@ -34,10 +34,11 @@ def main():
     
     results['award_data'] = {}
     for award in awards:
-        results['award_data'][award] = {}
+        results['award_data'][award.name] = {}
         for t in types:
-            results['award_data'][award][t] = award.results[t]
+            results['award_data'][award.name][t] = award.results[t]
     
+    print(results)
     return results
         
             

@@ -1,5 +1,5 @@
 import re
-
+from collections import Counter
 
 class Award(object):
 
@@ -66,11 +66,10 @@ class Award(object):
                 currNoun = ''
         return retList
 
-    def getWinner(self):
-        self.results['winner'] = self.mostCommon(self.tweetsToNouns(self.relevant_tweets))
+    def getResults(self):
+        c = Counter(self.tweetsToNouns(self.relevant_tweets))
+        top_five = [key for key, val in c.most_common(5)]
+        self.results['nominees'] = top_five
 
-    def mostCommon(self, lst):
-        try:
-            return max(lst, key=lst.count)
-        except:
-            return ''
+        c = Counter(top_five)
+        self.results['winner'] = c.most_common(1)[0][0]
