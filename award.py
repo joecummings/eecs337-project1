@@ -7,9 +7,10 @@ class Award(object):
         self.name = Predicate.name
         self.relevant_tweets = list()
         self.predicate = Predicate.pred
-        self.nominees = list()
+        self.results = {'presenters':[],
+                        'nominees':[],
+                        'winner':[]}
         self.stop_words = ['goldenglobes','golden','globes','','golden globes', 'tv', 'rt']
-        self.winner = ''
 
     def relevantHa(self, tweet):
         if self.predicate(tweet):
@@ -34,7 +35,7 @@ class Award(object):
         return retList
 
     def getWinner(self):
-        self.winner = self.mostCommon(self.tweetsToNouns(self.relevant_tweets))
+        self.results['winner'] = self.mostCommon(self.tweetsToNouns(self.relevant_tweets))
 
     def mostCommon(self, lst):
         try:
