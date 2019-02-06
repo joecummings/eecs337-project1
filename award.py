@@ -68,8 +68,7 @@ class Award(object):
 
     def getResults(self):
         c = Counter(self.tweetsToNouns(self.relevant_tweets))
-        top_five = [key for key, val in c.most_common(5)]
+        top_five = [key, val for key, val in c.most_common(5)]
         self.results['nominees'] = top_five
 
-        c = Counter(top_five)
-        self.results['winner'] = c.most_common(1)[0][0]
+        self.results['winner'] = 'm'

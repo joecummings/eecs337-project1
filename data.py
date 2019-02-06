@@ -40,7 +40,7 @@ def main():
         new_award = Award(pred)
 
         for tweetDict in rawData:
-            tweet = tweetDict['text']
+            tweet = parseTweet(tweetDict['text'])
             new_award.relevantHa(tweet)
 
         new_award.getResults()
