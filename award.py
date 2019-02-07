@@ -1,6 +1,6 @@
 import re
 from collections import Counter
-from parsing_helpers import lToD
+from parsing_helpers import lToD, allNGrams
 
 class Award(object):
 
@@ -12,7 +12,7 @@ class Award(object):
                         'nominees':[],
                         'winner':[]}
         self.nominees = list()
-        self.stop_words = ['need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
+        self.stop_words = ['tv','tvs','congratulations','need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
         self.winner = ''
         self.nominees = []
 
@@ -21,19 +21,29 @@ class Award(object):
         exclude_list = ['RT']
 
         include_dict = {
+            'limited series': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
+            'for television': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
+            'television':'tv,television,tele,t.v.',
+            'song': 'song',
+            'score': 'score,composer', #do not fucking say music
+            'language':'foreign,language',
+            'foreign':'foreign,language',
+            'animated': 'anime,animated,animate,cartoon',
+            'screenplay':'screenplay',
             'drama':'drama',
             'host':'host',
             'comedy': 'comedy,musical',
             'musical': 'comedy,musical',
-            'actor':'actor',
-            'actress':'actress,actriz',
-            'best':'best',
+            'actor':'actor,performance',
+            'actress':'actress,actriz,performance',
             'director':'director',
             'motion':'motion,picture',
             'picture':'motion,picture',
             'supporting':'supporting,extra'
         }
         exclude_dict = {
+            'series': 'movie,motion,picture',
+            'foreign': 'press',
             'actor':'actress,actriz',
             'actress':'actor'
         }
@@ -49,6 +59,10 @@ class Award(object):
         return include_list, exclude_list
 
     def relevantHa(self, tweet):
+
+        #experiment
+        originalTweet = tweet
+        tweet = tweet.lower()
 
         relevavantBool = True
         delimiter = ','
@@ -80,7 +94,7 @@ class Award(object):
             relevavantBool = relevavantBool and localBool
 
         if relevavantBool:
-            self.relevant_tweets.append(tweet)
+            self.relevant_tweets.append(originalTweet)
             
 
     def tweetsToNouns(self, tweets):
@@ -92,7 +106,8 @@ class Award(object):
         if self.name == 'Award Show':
             proper_nouns = [noun for noun in proper_nouns if noun in self.include[0].split(',')]
         else:
-            proper_nouns = [noun for noun in proper_nouns if noun not in self.stop_words]
+            #experiment - making sure we can't get junk from our name
+            proper_nouns = [noun for noun in proper_nouns if noun not in self.stop_words and not(bool(set(noun.split(' ')) & set(self.name.lower().split(' '))))]
         return proper_nouns
 
     def getProperNouns(self, text):
@@ -107,21 +122,9 @@ class Award(object):
                 currNoun = ''
         return retList
 
+    def mostCommon(self,lst):
+        return max(set(lst), key=lst.count)
+
     def getResults(self):
-
-        d = lToD(self.tweetsToNouns(self.relevant_tweets))
-        for key,value in d.items():
-            for key2,value2 in d.items():
-                if key2 in key:
-                    d[key] += d[key2]
-
-        top_five = []
-        v=list(d.values())
-        k=list(d.keys())
-        for i in range(5):
-            index = v.index(max(v))
-            top_five = k[index]
-            v.pop(index)
-            
-        self.results['winner'] = top_five[0]
-        self.results['nominees'] = top_five
+        print(self.name)         
+        self.results['winner'] = self.mostCommon(self.tweetsToNouns(self.relevant_tweets))
