@@ -2,18 +2,6 @@
 import re
 import unicodedata
 from predicates import *
-import nltk
-
-def parseTweet(tweet):
-    bad_characters = ['.','-','_','&','~',',', '\\','?','!',';']
-
-    init_res = nltk.tokenize.casual.casual_tokenize(tweet)
-    for i, word in enumerate(init_res):
-        init_res[i] = word.lower()
-        if word in bad_characters:
-            init_res[i] = ""
-    
-    return ' '.join([x for x in init_res if x != ""])
 
 def p_predicates(p_file):
 
@@ -32,11 +20,26 @@ def p_predicates(p_file):
 def lToD(i):
     return {x: i.count(x) for x in i}
 
-def dToSubList(d):
-    retL = []
-    for key,value in d.item():
-        local_list = [(k, v) for (k, v) in D.iteritems() if key in k]
-        local_key = max(map(len, [k for (k,v) in local_list]))
-        local_value = sum([v for (k,v) in local_list])
-        retL.extend([local_value for i in range(local_key)])
-    return retL
+def pset(myset):
+  if not myset: # Empty list -> empty set
+    return [set()]
+
+  r = []
+  for y in myset:
+    sy = set((y,))
+    for x in pset(myset - sy):
+      if x not in r:
+        r.extend([x, x|sy])
+  return r
+
+def allNGrams(lst):
+  return [' '.join(list(x)) for x in pset(set(lst))]
+
+# def dToSubList(d):
+#     retL = []
+#     for key,value in d.item():
+#         local_list = [(k, v) for (k, v) in D.iteritems() if key in k]
+#         local_key = max(map(len, [k for (k,v) in local_list]))
+#         local_value = sum([v for (k,v) in local_list])
+#         retL.extend([local_value for i in range(local_key)])
+#     return retL
