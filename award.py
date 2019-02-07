@@ -125,6 +125,5 @@ class Award(object):
     def mostCommon(self,lst):
         return max(set(lst), key=lst.count)
 
-    def getResults(self):
-        print(self.name)         
+    def getResults(self):   
         self.results['winner'] = self.mostCommon(self.tweetsToNouns(self.relevant_tweets))
