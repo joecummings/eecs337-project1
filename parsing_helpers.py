@@ -8,7 +8,7 @@ def parseTweet(tweet):
 
     init_res = nltk.tokenize.casual.casual_tokenize(tweet)
     for i, word in enumerate(init_res):
-        init_res[i] = word.lower()
+        # init_res[i] = word.lower()
         if word in bad_characters:
             init_res[i] = ""
     

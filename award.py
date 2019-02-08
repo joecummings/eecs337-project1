@@ -13,10 +13,6 @@ class Award(object):
                         'winner':[]}
         self.nominees = list()
         self.stop_words = ['tv','tvs','congratulations','need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
-        self.winner = ''
-        self.nominees = []
-        print(self.include)
-        print(self.exclude)
 
     def generateIncludeExclude(self):
         include_list = []

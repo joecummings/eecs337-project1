@@ -18,18 +18,6 @@ def makeAwardListPredicates():
     predicates[0].exclude = award_exclude
     return predicates, len(predicates)
 
-# def makeDressedPredicates():
-#     bestInclude = ['best,great,incredible','dress,dressed,clothing']
-#     bestExclude = ['RT']
-#     worstInclude = ['worst,terrible,gross','dress,dressed,clothing']
-#     worstExclude = ['RT'] 
-#     predicates = [Predicate('Best Dressed'),Predicate('Worst Dressed')]
-#     predicates[0].include = bestInclude
-#     predicates[0].exclude = bestExclude
-#     predicates[1].include = worstInclude
-#     predicates[1].exclude = worstExclude
-#     return predicates
-
 types = ['presenters', 'nominees', 'winner']
 
 def main():
@@ -41,15 +29,6 @@ def main():
 
     with open(categories_file_name, newline='\n') as f:
         predicates = [ category[0] for category in list(csv.reader(f))]
-
-    # predicates = p_predicates('predicates.txt')
-    # predicates = [] # testing line
-
-    # award_list_predicates, len_award_list_predicates = makeAwardListPredicates()
-    # predicates = predicates + award_list_predicates
-
-    # dressed_predicates, len_dressed_predicates = makeDressedPredicates()
-    # predicates = predicates + dressed_predicates
 
     with open(data_file_name) as data_file:
         rawData = json.load(data_file)
@@ -74,21 +53,15 @@ def main():
             results['award_data'][award.name][t] = award.results[t]
     
     print(time.time() - now)
-<<<<<<< HEAD
     print(results)
-    return results
-=======
-    for a in awards:
-        print(a.results['winner'], a.name) 
 
     for p in ['Best Dressed','Worst Dressed']:
 
         new_award = Award(p)
         for tweetDict in rawData:
-            tweet = tweetDict['text']
+            tweet = parseTweet(tweetDict['text'])
             new_award.relevantHa(tweet)
         new_award.getResults()
->>>>>>> e6439c255cc7ee35ed783744a603d370acfd907e
 
         awardCeremonyYear = '2013'
         keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
