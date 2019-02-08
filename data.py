@@ -18,17 +18,17 @@ def makeAwardListPredicates():
     predicates[0].exclude = award_exclude
     return predicates, len(predicates)
 
-def makeDressedPredicates():
-    bestInclude = ['best,great,incredible','dress,dressed,clothing']
-    bestExclude = ['RT']
-    worstInclude = ['worst,terrible,gross','dress,dressed,clothing']
-    worstExclude = ['RT'] 
-    predicates = [Predicate('Best Dressed'),Predicate('Worst Dressed')]
-    predicates[0].include = bestInclude
-    predicates[0].exclude = bestExclude
-    predicates[1].include = worstInclude
-    predicates[1].exclude = worstExclude
-    return predicates, len(predicates)
+# def makeDressedPredicates():
+#     bestInclude = ['best,great,incredible','dress,dressed,clothing']
+#     bestExclude = ['RT']
+#     worstInclude = ['worst,terrible,gross','dress,dressed,clothing']
+#     worstExclude = ['RT'] 
+#     predicates = [Predicate('Best Dressed'),Predicate('Worst Dressed')]
+#     predicates[0].include = bestInclude
+#     predicates[0].exclude = bestExclude
+#     predicates[1].include = worstInclude
+#     predicates[1].exclude = worstExclude
+#     return predicates
 
 types = ['presenters', 'nominees', 'winner']
 
@@ -74,19 +74,31 @@ def main():
             results['award_data'][award.name][t] = award.results[t]
     
     print(time.time() - now)
+<<<<<<< HEAD
     print(results)
     return results
+=======
+    for a in awards:
+        print(a.results['winner'], a.name) 
 
-    # for a in awards[:len_dressed_predicates:-1]:
-    #     awardCeremonyYear = '2013'
-    #     keywords = a.winner + ' ' + a.name + ' '+ awardCeremonyYear
-    #     response = google_images_download.googleimagesdownload()
-    #     arguments = {
-	# 		"keywords": keywords,
-	# 		"limit": 1
-	# 	}
-    #     paths = response.download(arguments) 
-    #     Image.open(paths[keywords][0]).show()
+    for p in ['Best Dressed','Worst Dressed']:
+
+        new_award = Award(p)
+        for tweetDict in rawData:
+            tweet = tweetDict['text']
+            new_award.relevantHa(tweet)
+        new_award.getResults()
+>>>>>>> e6439c255cc7ee35ed783744a603d370acfd907e
+
+        awardCeremonyYear = '2013'
+        keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
+        response = google_images_download.googleimagesdownload()
+        arguments = {
+			"keywords": keywords,
+			"limit": 1
+		}
+        paths = response.download(arguments) 
+        Image.open(paths[keywords][0]).show()
             
 if __name__ == "__main__":
     main()
