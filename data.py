@@ -30,11 +30,14 @@ def makeAwardListPredicates():
 #     predicates[1].exclude = worstExclude
 #     return predicates
 
+types = ['presenters', 'nominees', 'winner']
+
 def main():
     now = time.time()
     data_file_name = 'gg2013.json'
     categories_file_name = 'ggCategories.csv'
     awards = list()
+    results = {}
 
     with open(categories_file_name, newline='\n') as f:
         predicates = [ category[0] for category in list(csv.reader(f))]
@@ -52,17 +55,29 @@ def main():
         rawData = json.load(data_file)
     
     for pred in predicates:
-        # pred.makePred()
         new_award = Award(pred)
 
         for tweetDict in rawData:
-            tweet = tweetDict['text']
+            tweet = parseTweet(tweetDict['text'])
             new_award.relevantHa(tweet)
 
         new_award.getResults()
-        awards.append(new_award)
+        if new_award.name == 'hosts':
+            results['hosts'] = new_award.results['winner']
+        else:
+            awards.append(new_award)
+    
+    results['award_data'] = {}
+    for award in awards:
+        results['award_data'][award.name] = {}
+        for t in types:
+            results['award_data'][award.name][t] = award.results[t]
     
     print(time.time() - now)
+<<<<<<< HEAD
+    print(results)
+    return results
+=======
     for a in awards:
         print(a.results['winner'], a.name) 
 
@@ -73,6 +88,7 @@ def main():
             tweet = tweetDict['text']
             new_award.relevantHa(tweet)
         new_award.getResults()
+>>>>>>> e6439c255cc7ee35ed783744a603d370acfd907e
 
         awardCeremonyYear = '2013'
         keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear

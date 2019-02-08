@@ -1,7 +1,18 @@
 # imports
 import re
 import unicodedata
-from predicates import *
+import nltk
+
+def parseTweet(tweet):
+    bad_characters = ['.','-','_','&','~',',', '\\','?','!',';']
+
+    init_res = nltk.tokenize.casual.casual_tokenize(tweet)
+    for i, word in enumerate(init_res):
+        init_res[i] = word.lower()
+        if word in bad_characters:
+            init_res[i] = ""
+    
+    return ' '.join([x for x in init_res if x != ""])
 
 def p_predicates(p_file):
 

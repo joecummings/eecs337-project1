@@ -137,9 +137,13 @@ class Award(object):
                 currNoun = ''
         return retList
 
-    def mostCommon(self,lst):
-        return max(set(lst), key=lst.count)
+    # def mostCommon(self,lst):
+    #     return max(set(lst), key=lst.count)
 
-    def getResults(self):
-        print(self.name)         
-        self.results['winner'] = self.mostCommon(self.tweetsToNouns(self.relevant_tweets))
+    def getResults(self):   
+        c = Counter(self.tweetsToNouns(self.relevant_tweets))
+        five_most_common = [key for key,pair in c.most_common(5)]
+        self.results['nominees'] = five_most_common
+
+        nc = Counter(five_most_common)
+        self.results['winner'] = nc.most_common(1)[0][0]
