@@ -15,12 +15,19 @@ class Award(object):
         self.stop_words = ['tv','tvs','congratulations','need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
         self.winner = ''
         self.nominees = []
+        print(self.include)
+        print(self.exclude)
 
     def generateIncludeExclude(self):
         include_list = []
         exclude_list = ['RT']
 
         include_dict = {
+            ##Hacky
+            'best dresse' : 'best,great,incredible',
+            'best dressed':'dress,dressed,clothing',
+            'worst dresse' : 'worst,terrible,gross',
+            'worst dressed': 'dress,dressed,clothing',
             'limited series': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
             'for television': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
             'television':'tv,television,tele,t.v.',
@@ -48,13 +55,21 @@ class Award(object):
             'actress':'actor'
         }
 
-        for word in self.name.split(' '):
-            word = word.lower()
-            try:
-                include_list.append(include_dict[word])
-                exclude_list.append(exclude_dict[word])
-            except:
-                pass
+        for key,value in include_dict.items():
+            if key in self.name.lower():
+                include_list.append(value)
+
+        for key,value in exclude_dict.items():
+            if key in self.name.lower():
+                exclude_list.append(value)
+
+        # for word in self.name.split(' '):
+        #     word = word.lower()
+        #     try:
+        #         include_list.append(include_dict[word])
+        #         exclude_list.append(exclude_dict[word])
+        #     except:
+        #         pass
 
         return include_list, exclude_list
 
