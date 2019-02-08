@@ -13,17 +13,23 @@ class Award(object):
                         'winner':[]}
         self.nominees = list()
         self.stop_words = ['tv','tvs','congratulations','need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
+        self.winner = ''
+        self.nominees = []
+        print(self.include)
+        print(self.exclude)
 
     def generateIncludeExclude(self):
         include_list = []
         exclude_list = ['RT']
 
         include_dict = {
+            'host': 'host',
             ##Hacky
             'best dresse' : 'best,great,incredible',
             'best dressed':'dress,dressed,clothing',
             'worst dresse' : 'worst,terrible,gross',
             'worst dressed': 'dress,dressed,clothing',
+            ##Hacky
             'limited series': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
             'for television': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
             'television':'tv,television,tele,t.v.',
@@ -72,8 +78,11 @@ class Award(object):
     def relevantHa(self, tweet):
 
         #experiment
+        print(tweet)
+        print('hi')
         originalTweet = tweet
         tweet = tweet.lower()
+        print(originalTweet)
 
         relevavantBool = True
         delimiter = ','
@@ -105,6 +114,7 @@ class Award(object):
             relevavantBool = relevavantBool and localBool
 
         if relevavantBool:
+            # print(originalTweet)
             self.relevant_tweets.append(originalTweet)
             
 
@@ -122,23 +132,29 @@ class Award(object):
         return proper_nouns
 
     def getProperNouns(self, text):
+        # print(text)
         retList = []
         tList = text.split()
         currNoun = ''
         for word in tList:
+            # print(word)
             if word[0].isupper():
                 currNoun = currNoun + ' ' + word
             elif len(currNoun) > 0:
                 retList.append(currNoun.strip())
                 currNoun = ''
+        # print(retList)
         return retList
 
     # def mostCommon(self,lst):
     #     return max(set(lst), key=lst.count)
 
-    def getResults(self):   
+    def getResults(self):
+
         c = Counter(self.tweetsToNouns(self.relevant_tweets))
+        print(c)
         five_most_common = [key for key,pair in c.most_common(5)]
+        print(five_most_common)
         self.results['nominees'] = five_most_common
 
         nc = Counter(five_most_common)
