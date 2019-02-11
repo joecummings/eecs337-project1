@@ -8,11 +8,11 @@ from PIL import Image
 from google_images_download import google_images_download 
 import csv
 
-#might want to include host in here?
+#might want to include host in here? edit
 def makeAwardListPredicates():
     award_include = ['golden globes,critics choice,screen actors,academy awards,emmy,producers guild,directors guild,writers guild']
     award_exclude = ['RT']
-    #Name is important
+    #Name is important 
     predicates = [Predicate('Award Show')]
     predicates[0].include = award_include
     predicates[0].exclude = award_exclude
