@@ -15,8 +15,8 @@ class Award(object):
         self.stop_words = ['tv','tvs','congratulations','need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
         self.winner = ''
         self.nominees = []
-        print(self.include)
-        print(self.exclude)
+        #print(self.include)
+        #print(self.exclude)
 
     def generateIncludeExclude(self):
         include_list = []
@@ -24,11 +24,18 @@ class Award(object):
 
         include_dict = {
             'host': 'host',
-            ##Hacky
+            ##Hacky, but it will do for BEST DRESSED
             'best dresse' : 'best,great,incredible',
             'best dressed':'dress,dressed,clothing',
             'worst dresse' : 'worst,terrible,gross',
             'worst dressed': 'dress,dressed,clothing',
+            #Most controversial runner-up (cally version)
+            'controversial runner-up' : 'robbed, stole, cheated, unfair, shocker',
+            # funniest acceptance speech this could very well just return the best presentation speech if there is a blowout like ferrell's
+            #'funniest acceptance speech' : 'funny, lol, best, speech, accepting' ,
+            #crowd's favoritie presentation speech
+            'crowd favorite presentation' : 'presented, speech, presenting, amazing',
+            'best after party' : 'afterparty, party',
             ##Hacky
             'limited series': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
             'for television': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
@@ -55,6 +62,10 @@ class Award(object):
             'foreign': 'press',
             'actor':'actress,actriz',
             'actress':'actor'
+        #for Ryan's extras
+        #controversial runner up
+        #funniest acceptance speech
+        #crowd favorite presentation speech
         }
 
         for key,value in include_dict.items():
@@ -78,11 +89,11 @@ class Award(object):
     def relevantHa(self, tweet):
 
         #experiment
-        print(tweet)
-        print('hi')
+        #print(tweet)
+        #print('hi')
         originalTweet = tweet
         tweet = tweet.lower()
-        print(originalTweet)
+        #print(originalTweet)
 
         relevavantBool = True
         delimiter = ','
