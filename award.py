@@ -15,16 +15,19 @@ class Award(object):
         self.stop_words = ['tv','tvs','congratulations','need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
         self.winner = ''
         self.nominees = []
-        #print(self.include)
-        #print(self.exclude)
 
     def generateIncludeExclude(self):
         include_list = []
-        exclude_list = ['RT']
+        exclude_list = ['rt']
 
         include_dict = {
             'host': 'host',
-            ##Hacky, but it will do for BEST DRESSED
+            'cecil b. demille award': 'cecil',
+            'generate categories': 'best motion picture',
+            ##
+            'presen':'jessica chastain',
+            'present': 'present,presenter,presents',
+            'host': 'host,hosts',
             'best dresse' : 'best,great,incredible',
             'best dressed':'dress,dressed,clothing',
             'worst dresse' : 'worst,terrible,gross',
@@ -76,24 +79,12 @@ class Award(object):
             if key in self.name.lower():
                 exclude_list.append(value)
 
-        # for word in self.name.split(' '):
-        #     word = word.lower()
-        #     try:
-        #         include_list.append(include_dict[word])
-        #         exclude_list.append(exclude_dict[word])
-        #     except:
-        #         pass
-
         return include_list, exclude_list
 
     def relevantHa(self, tweet):
 
-        #experiment
-        #print(tweet)
-        #print('hi')
         originalTweet = tweet
         tweet = tweet.lower()
-        #print(originalTweet)
 
         relevavantBool = True
         delimiter = ','
@@ -125,12 +116,12 @@ class Award(object):
             relevavantBool = relevavantBool and localBool
 
         if relevavantBool:
-            # print(originalTweet)
             self.relevant_tweets.append(originalTweet)
             
 
     def tweetsToNouns(self, tweets):
         #list of list t0 list
+        print(tweets)
         proper_nouns = [self.getProperNouns(tweet) for tweet in tweets]
         #flatten and lower
         proper_nouns = [noun.lower() for nouns in proper_nouns for noun in nouns]
@@ -140,6 +131,7 @@ class Award(object):
         else:
             #experiment - making sure we can't get junk from our name
             proper_nouns = [noun for noun in proper_nouns if noun not in self.stop_words and not(bool(set(noun.split(' ')) & set(self.name.lower().split(' '))))]
+        print(proper_nouns)
         return proper_nouns
 
     def getProperNouns(self, text):
@@ -164,9 +156,17 @@ class Award(object):
 
         c = Counter(self.tweetsToNouns(self.relevant_tweets))
         print(c)
-        five_most_common = [key for key,pair in c.most_common(5)]
-        print(five_most_common)
-        self.results['nominees'] = five_most_common
+        print('c above')
+        print(self.name)
 
-        nc = Counter(five_most_common)
-        self.results['winner'] = nc.most_common(1)[0][0]
+        five_most_common = [key for key,pair in c.most_common(5)]
+        try:
+            self.results['nominees'] = five_most_common
+        except:
+            self.results['nominees'] = []
+
+        try:
+            nc = Counter(five_most_common)
+            self.results['winner'] = nc.most_common(1)[0][0]
+        except:
+            self.results['winner'] = 'Larry Birmbaum'
