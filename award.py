@@ -82,10 +82,7 @@ class Award(object):
         return include_list, exclude_list
 
     def relevantHa(self, tweet):
-<<<<<<< HEAD
-=======
 
->>>>>>> 783b9ae1865e0899b1df97beab55a073d2fead06
         originalTweet = tweet
         tweet = tweet.lower()
 
@@ -124,7 +121,6 @@ class Award(object):
 
     def tweetsToNouns(self, tweets):
         #list of list t0 list
-        print(tweets)
         proper_nouns = [self.getProperNouns(tweet) for tweet in tweets]
         #flatten and lower
         proper_nouns = [noun.lower() for nouns in proper_nouns for noun in nouns]
@@ -134,7 +130,6 @@ class Award(object):
         else:
             #experiment - making sure we can't get junk from our name
             proper_nouns = [noun for noun in proper_nouns if noun not in self.stop_words and not(bool(set(noun.split(' ')) & set(self.name.lower().split(' '))))]
-        print(proper_nouns)
         return proper_nouns
 
     def getProperNouns(self, text):

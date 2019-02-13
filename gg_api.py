@@ -56,7 +56,7 @@ def get_winner(year):
     
     res = results[year]
 
-    winners = {award: res['award_data'][award]['winner'] for award in OFFICIAL_AWARDS}
+    winners = {award: res['award_data'][award]['winner'] for award in offish_awards}
     return winners
 
 def get_presenters(year):
@@ -82,9 +82,9 @@ def pre_ceremony():
 
 
     import csv
-    with open('givencategories.csv', 'wb') as myfile:
+    with open('givencategories.csv', 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        wr.writerow(OFFICIAL_AWARDS)
+        wr.writerow(OFFICIAL_AWARDS_1315)
     print("Pre-ceremony processing complete.")
     
     return
