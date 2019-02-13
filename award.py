@@ -82,10 +82,6 @@ class Award(object):
         return include_list, exclude_list
 
     def relevantHa(self, tweet):
-<<<<<<< HEAD
-=======
-
->>>>>>> 783b9ae1865e0899b1df97beab55a073d2fead06
         originalTweet = tweet
         tweet = tweet.lower()
 
