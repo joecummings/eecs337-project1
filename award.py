@@ -82,7 +82,10 @@ class Award(object):
         return include_list, exclude_list
 
     def relevantHa(self, tweet):
+<<<<<<< HEAD
+=======
 
+>>>>>>> 783b9ae1865e0899b1df97beab55a073d2fead06
         originalTweet = tweet
         tweet = tweet.lower()
 
@@ -135,18 +138,15 @@ class Award(object):
         return proper_nouns
 
     def getProperNouns(self, text):
-        # print(text)
         retList = []
         tList = text.split()
         currNoun = ''
         for word in tList:
-            # print(word)
             if word[0].isupper():
                 currNoun = currNoun + ' ' + word
             elif len(currNoun) > 0:
                 retList.append(currNoun.strip())
                 currNoun = ''
-        # print(retList)
         return retList
 
     # def mostCommon(self,lst):
@@ -155,9 +155,8 @@ class Award(object):
     def getResults(self):
 
         c = Counter(self.tweetsToNouns(self.relevant_tweets))
-        print(c)
-        print('c above')
-        print(self.name)
+        five_most_common = [key for key,pair in c.most_common(5)]
+        self.results['nominees'] = five_most_common
 
         five_most_common = [key for key,pair in c.most_common(5)]
         try:
