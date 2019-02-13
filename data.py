@@ -71,8 +71,10 @@ def main():
 			"limit": 1
 		}
         paths = response.download(arguments) 
-        Image.open(paths[keywords][0]).show()
-            
+        #Image.open(paths[keywords][0]).show()
+
+    return results
+
 if __name__ == "__main__":
     main()
 
