@@ -79,7 +79,14 @@ def pre_ceremony():
     plain text file. It is the first thing the TA will run when grading.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
+
+
+    import csv
+    with open('givencategories.csv', 'wb') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        wr.writerow(OFFICIAL_AWARDS)
     print("Pre-ceremony processing complete.")
+    
     return
 
 def main():

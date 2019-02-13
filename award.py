@@ -18,15 +18,27 @@ class Award(object):
 
     def generateIncludeExclude(self):
         include_list = []
-        exclude_list = ['RT']
+        exclude_list = ['rt']
 
         include_dict = {
             'host': 'host',
-            ##Hacky
+            'cecil b. demille award': 'cecil',
+            'generate categories': 'best motion picture',
+            ##
+            'presen':'jessica chastain',
+            'present': 'present,presenter,presents',
+            'host': 'host,hosts',
             'best dresse' : 'best,great,incredible',
             'best dressed':'dress,dressed,clothing',
             'worst dresse' : 'worst,terrible,gross',
             'worst dressed': 'dress,dressed,clothing',
+            #Most controversial runner-up (cally version)
+            'controversial runner-up' : 'robbed, stole, cheated, unfair, shocker',
+            # funniest acceptance speech this could very well just return the best presentation speech if there is a blowout like ferrell's
+            #'funniest acceptance speech' : 'funny, lol, best, speech, accepting' ,
+            #crowd's favoritie presentation speech
+            'crowd favorite presentation' : 'presented, speech, presenting, amazing',
+            'best after party' : 'afterparty, party',
             ##Hacky
             'limited series': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
             'for television': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
@@ -53,6 +65,10 @@ class Award(object):
             'foreign': 'press',
             'actor':'actress,actriz',
             'actress':'actor'
+        #for Ryan's extras
+        #controversial runner up
+        #funniest acceptance speech
+        #crowd favorite presentation speech
         }
 
         for key,value in include_dict.items():
@@ -63,17 +79,13 @@ class Award(object):
             if key in self.name.lower():
                 exclude_list.append(value)
 
-        # for word in self.name.split(' '):
-        #     word = word.lower()
-        #     try:
-        #         include_list.append(include_dict[word])
-        #         exclude_list.append(exclude_dict[word])
-        #     except:
-        #         pass
-
         return include_list, exclude_list
 
     def relevantHa(self, tweet):
+<<<<<<< HEAD
+=======
+
+>>>>>>> 783b9ae1865e0899b1df97beab55a073d2fead06
         originalTweet = tweet
         tweet = tweet.lower()
 
@@ -112,6 +124,7 @@ class Award(object):
 
     def tweetsToNouns(self, tweets):
         #list of list t0 list
+        print(tweets)
         proper_nouns = [self.getProperNouns(tweet) for tweet in tweets]
         #flatten and lower
         proper_nouns = [noun.lower() for nouns in proper_nouns for noun in nouns]
@@ -121,6 +134,7 @@ class Award(object):
         else:
             #experiment - making sure we can't get junk from our name
             proper_nouns = [noun for noun in proper_nouns if noun not in self.stop_words and not(bool(set(noun.split(' ')) & set(self.name.lower().split(' '))))]
+        print(proper_nouns)
         return proper_nouns
 
     def getProperNouns(self, text):
@@ -144,5 +158,14 @@ class Award(object):
         five_most_common = [key for key,pair in c.most_common(5)]
         self.results['nominees'] = five_most_common
 
-        nc = Counter(five_most_common)
-        self.results['winner'] = nc.most_common(1)[0][0]
+        five_most_common = [key for key,pair in c.most_common(5)]
+        try:
+            self.results['nominees'] = five_most_common
+        except:
+            self.results['nominees'] = []
+
+        try:
+            nc = Counter(five_most_common)
+            self.results['winner'] = nc.most_common(1)[0][0]
+        except:
+            self.results['winner'] = 'Larry Birmbaum'

@@ -7,6 +7,8 @@ import time
 from PIL import Image
 from google_images_download import google_images_download 
 import csv
+import pprint
+
 
 #might want to include host in here?
 def makeAwardListPredicates():
@@ -18,60 +20,72 @@ def makeAwardListPredicates():
     predicates[0].exclude = award_exclude
     return predicates, len(predicates)
 
-types = ['presenters', 'nominees', 'winner']
+
+def buildAwards(categories,rawData):
+    awards = []
+    for category in categories:
+        new_award = Award(category)
+        for tweetDict in rawData:
+            tweet = tweetDict['text']
+            # tweet = parseTweet(tweetDict['text'])
+            new_award.relevantHa(tweet)
+        new_award.getResults()
+        awards.append(new_award)
+    return awards
 
 def main():
+
+    #Parameters
     now = time.time()
     data_file_name = 'gg2013.json'
-    categories_file_name = 'ggCategories.csv'
+    categories_file_name = 'givencategories.csv'
+
+    #Variables
     awards = list()
     results = {}
+    results['award_data'] = {}
+    types = ['presenters', 'nominees', 'winner']
 
-    with open(categories_file_name, newline='\n') as f:
-        predicates = [ category[0] for category in list(csv.reader(f))]
-
+    #Part 0 - Gather Data
     with open(data_file_name) as data_file:
         rawData = json.load(data_file)
-    
-    for pred in predicates:
-        new_award = Award(pred)
 
-        for tweetDict in rawData:
-            tweet = parseTweet(tweetDict['text'])
-            new_award.relevantHa(tweet)
+    #Part 1 - Host of Ceremony
+    awards = buildAwards(['host'],rawData)
+    results['hosts'] = awards[0].results['winner']
+    awards = []
 
-        new_award.getResults()
-        if new_award.name == 'hosts':
-            results['hosts'] = new_award.results['winner']
-        else:
-            awards.append(new_award)
-    
-    results['award_data'] = {}
+    #Part 2 - Awards / Categories
+    pass
+
+    #Parts 3-5 -  Built in Categories
+    with open(categories_file_name, newline='\n') as f:
+        categories = list(csv.reader(f))[0]
+    awards = buildAwards(categories,rawData)
     for award in awards:
         results['award_data'][award.name] = {}
         for t in types:
             results['award_data'][award.name][t] = award.results[t]
     
     print(time.time() - now)
-    print(results)
+    pprint.pprint(results,depth=3)
 
-    for p in ['Best Dressed','Worst Dressed']:
+    # for p in ['Best Dressed','Worst Dressed']:
 
-        new_award = Award(p)
-        for tweetDict in rawData:
-            tweet = parseTweet(tweetDict['text'])
-            new_award.relevantHa(tweet)
-        new_award.getResults()
+    #     new_award = Award(p)
+    #     for tweetDict in rawData:
+    #         new_award.relevantHa(tweet)
+    #     new_award.getResults()
 
-        awardCeremonyYear = '2013'
-        keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
-        response = google_images_download.googleimagesdownload()
-        arguments = {
-			"keywords": keywords,
-			"limit": 1
-		}
-        paths = response.download(arguments) 
-        #Image.open(paths[keywords][0]).show()
+    #     awardCeremonyYear = '2013'
+    #     keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
+    #     response = google_images_download.googleimagesdownload()
+    #     arguments = {
+	# 		"keywords": keywords,
+	# 		"limit": 1
+	# 	}
+    #     paths = response.download(arguments) 
+    #     Image.open(paths[keywords][0]).show()
 
     return results
 
