@@ -2,6 +2,22 @@
 import re
 import unicodedata
 import nltk
+from imdb import IMDb
+ia = IMDb()
+
+def uniToAscii(uni_str):
+  return unicodedata.normalize('NFKD', uni_str).encode('ascii','ignore')
+
+def proper_noun_check(noun_type,noun):
+  if noun_type == 'art':
+    return noun == str(ia.search_movie(noun)[0]).lower()
+  elif noun_type == 'person':
+    return noun == str(ia.search_person(noun)[0]).lower()
+  else:
+    print('YOU MORON CALL THIS FUNCTION RIGHT')
+    return None
+
+
 
 def parseTweet(tweet):
     bad_characters = ['.','-','_','&','~',',', '\\','?','!',';']
