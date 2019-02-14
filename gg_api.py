@@ -95,8 +95,10 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
     what it returns.'''
+    for year in ['2013','2015']:
+        data_file_name = 'gg'+year+'.json'
+        results[year] = data.main(data_file_name)
     
-    results['2013'] = data.main()
     with open('results.json', 'w') as fp:
         json.dump(results, fp)
 
