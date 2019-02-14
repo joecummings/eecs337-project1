@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'Please enter whichever Python interpreter provides you with Python 3:'
-echo '[python] OR [python3]'
+echo '[ python ] OR [ python3 ]'
 read py
 
 echo 'Running pre ceremony...'
@@ -12,5 +12,7 @@ $py gg_api.py
 
 echo 'Running autograder...'
 $py autograder.py
+
+rm givencategories.csv
 
 echo 'Done!'
