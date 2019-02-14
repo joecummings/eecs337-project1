@@ -10,14 +10,18 @@ def uniToAscii(uni_str):
 
 def proper_noun_check(noun_type,noun):
   if noun_type == 'art':
-    return noun == str(ia.search_movie(noun)[0]).lower()
+    try:
+      return noun == str(ia.search_movie(noun)[0]).lower()
+    except:
+      return False
   elif noun_type == 'person':
-    return noun == str(ia.search_person(noun)[0]).lower()
+    try:
+      return noun == str(ia.search_person(noun)[0]).lower()
+    except:
+      return False
   else:
     print('YOU MORON CALL THIS FUNCTION RIGHT')
     return None
-
-
 
 def parseTweet(tweet):
     bad_characters = ['.','-','_','&','~',',', '\\','?','!',';']
