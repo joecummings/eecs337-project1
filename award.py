@@ -195,7 +195,7 @@ class Award(object):
 
         if self.name == 'best performance by an actress in a supporting role in a motion picture':
             for tweet in self.relevant_tweets:
-                print(tweet)
+                #print(tweet)
             # pdb.set_trace()
 
         # print(five_most_common)

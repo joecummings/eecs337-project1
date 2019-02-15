@@ -66,7 +66,6 @@ def main(data_file_name):
         for t in types:
             results['award_data'][award.name][t] = award.results[t]
     
-    print(time.time() - now)
     pprint.pprint(results,depth=3)
 	
     #Part 6 Extra Awards  
@@ -79,7 +78,7 @@ def main(data_file_name):
         new_award = Award(p)
         for tweetDict in rawData:
             new_award.relevantHa(p)# was (tweet)
-        print (new_award.getResults())
+        #print (new_award.getResults())
 
         awardCeremonyYear = '2013'
         keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
@@ -95,7 +94,7 @@ def main(data_file_name):
         new_award = Award(a)
         for tweetDict in rawData:
             new_award.relevantHa(a)
-        print (new_award.getResults())
+        #print (new_award.getResults())
         #results['award_data'][a]['winner'] = award.results['winner']
 
     return results
