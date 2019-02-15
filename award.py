@@ -1,7 +1,58 @@
 import re
 from collections import Counter
-from parsing_helpers import lToD, proper_noun_check
+from parsing_helpers import lToD, proper_noun_check,trimPunc
 import pdb
+
+exclude_dict = {
+    #for Ryan's extras
+    #controversial runner up
+    #funniest acceptance speech
+    #crowd favorite presentation speech
+    # 'support': 'daniel',
+    # 'supporti':'hugh jackman',
+    # 'supportin': 'jessica chastain',
+    # 'supporting': 'jennifer lawrence',
+    'supporting': [],
+    'motion': ['mini-series','mini series','miniseries','limited series'],
+    'picture': ['mini-series','mini series','miniseries','limited series'],
+    'series': ['movie,motion,picture'],
+    'foreign': ['press'],
+    'actor':['actress,actriz'],
+    'actress':['actor'],
+    'host':['rt']
+}
+include_dict = {
+    # funniest acceptance speech this could very well just return the best presentation speech if there is a blowout like ferrell's
+    #'funniest acceptance speech' : 'funny, lol, best, speech, accepting' ,
+    #crowd's favoritie presentation speech
+    #Most controversial runner-up (cally version)
+    ##Hacky
+    'cecil b. demille award': ['cecil','b','demille'],
+    'present': ['present,presenter,presents'],
+    'host': ['host,hosts'],
+    'best dressed':['dress,dressed,clothing','best,great,incredible'],
+    'worst dressed': ['dress,dressed,clothing','worst,terrible,gross'],
+    'controversial runner-up' : ['robbed,stole,cheated,unfair,shocker'],
+    'crowd favorite presentation' : ['presented,speech,presenting,amazing'],
+    'best after party' : ['afterparty,party'],
+    'limited series': ['mini-series for,mini series for,miniseries for,limited series for,for television,for tv,for t.v.'],
+    'for television': ['mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.'],
+    'television': ['tv,television,tele,t.v.'],
+    'song': ['song'],
+    'score': ['score,composer'], #do not fucking say music
+    'language': ['foreign,language'],
+    'foreign': ['foreign,language'],
+    'animated': ['anime,animated,animate,cartoon'],
+    'screenplay': ['screenplay'],
+    'drama': ['drama'],
+    'comedy': ['comedy,musical'],
+    'musical': ['comedy,musical'],
+    'actor': ['actor,performance'],
+    'actress': ['actress,actriz,performance'],
+    'director': ['director'],
+    'motion': ['motion,picture'],
+    'picture': ['motion,picture']  
+}
 
 class Award(object):
 
@@ -25,66 +76,17 @@ class Award(object):
 
     def generateIncludeExclude(self):
         include_list = []
-        exclude_list = ['rt']
-
-        include_dict = {
-            'host': 'host',
-            'cecil b. demille award': 'cecil',
-            'generate categories': 'best motion picture',
-            ##
-            'presen':'jessica chastain',
-            'present': 'present,presenter,presents',
-            'host': 'host,hosts',
-            'best dresse' : 'best,great,incredible',
-            'best dressed':'dress,dressed,clothing',
-            'worst dresse' : 'worst,terrible,gross',
-            'worst dressed': 'dress,dressed,clothing',
-            #Most controversial runner-up (cally version)
-            'controversial runner-up' : 'robbed, stole, cheated, unfair, shocker',
-            # funniest acceptance speech this could very well just return the best presentation speech if there is a blowout like ferrell's
-            #'funniest acceptance speech' : 'funny, lol, best, speech, accepting' ,
-            #crowd's favoritie presentation speech
-            'crowd favorite presentation' : 'presented, speech, presenting, amazing',
-            'best after party' : 'afterparty, party',
-            ##Hacky
-            'limited series': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
-            'for television': 'mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.',
-            'television':'tv,television,tele,t.v.',
-            'song': 'song',
-            'score': 'score,composer', #do not fucking say music
-            'language':'foreign,language',
-            'foreign':'foreign,language',
-            'animated': 'anime,animated,animate,cartoon',
-            'screenplay':'screenplay',
-            'drama':'drama',
-            'host':'host',
-            'comedy': 'comedy,musical',
-            'musical': 'comedy,musical',
-            'actor':'actor,performance',
-            'actress':'actress,actriz,performance',
-            'director':'director',
-            'motion':'motion,picture',
-            'picture':'motion,picture',
-            'supporting':'supporting,extra'
-        }
-        exclude_dict = {
-            'series': 'movie,motion,picture',
-            'foreign': 'press',
-            'actor':'actress,actriz',
-            'actress':'actor'
-        #for Ryan's extras
-        #controversial runner up
-        #funniest acceptance speech
-        #crowd favorite presentation speech
-        }
+        exclude_list = []
 
         for key,value in include_dict.items():
             if key in self.name.lower():
-                include_list.append(value)
+                for include_or in value:
+                    include_list.append(include_or)
 
         for key,value in exclude_dict.items():
             if key in self.name.lower():
-                exclude_list.append(value)
+                for exclude_or in value:
+                    exclude_list.append(exclude_or)
 
         return include_list, exclude_list
 
@@ -96,6 +98,8 @@ class Award(object):
         relevavantBool = True
         delimiter = ','
 
+
+
         for local_or_string in self.include:
 
             if not relevavantBool:
@@ -103,7 +107,17 @@ class Award(object):
 
             localBool = False
             for word in local_or_string.split(delimiter):
+
+                # if 'Anne Hathaway' in tweet:
+                #     print(tweet)
+                #     pdb.set_trace()
+
                 if word in tweet:
+                        # pdb.set_trace()
+
+                    # if self.name == 'best performance by an actress in a supporting role in a motion picture':
+                        
+
                     localBool = True
                     break
             
@@ -116,6 +130,14 @@ class Award(object):
 
             localBool = False
             for word in local_or_string.split(delimiter):
+
+                # if self.name == 'best performance by an actress in a supporting role in a motion picture':
+                #     if word != 'rt':
+                #         print(word)
+                #         print(tweet)
+                #         print(word not in tweet)
+                #         pdb.set_trace()
+
                 if word not in tweet:
                     localBool = True
                     break
@@ -161,18 +183,25 @@ class Award(object):
         nounsAndCounts.sort(key=lambda x: -x[1])
 
         five_most_common = []
-
         i = 0 
         while len(five_most_common) < 5:
             try:
                 name = nounsAndCounts[i][0]
-                # print(name)
                 if proper_noun_check(self.noun_type,name):
-                    # print(name)
                     five_most_common.append(name)
                 i += 1
             except:
                 break
+
+        if self.name == 'best performance by an actress in a supporting role in a motion picture':
+            for tweet in self.relevant_tweets:
+                print(tweet)
+            # pdb.set_trace()
+
+        # print(five_most_common)
+        # print(exclude_dict['supporting'])
+        # print(self.name)
+        # pdb.set_trace()
 
         try:
             self.results['nominees'] = five_most_common
@@ -180,6 +209,11 @@ class Award(object):
             self.results['nominees'] = []
 
         try:
-            self.results['winner'] = five_most_common[0]
+            winner = five_most_common[0]
+            self.results['winner'] = winner
+
+            if self.noun_type == 'person':
+                exclude_dict['supporting'].append(winner)
+
         except:
             self.results['winner'] = 'Larry Birmbaum'

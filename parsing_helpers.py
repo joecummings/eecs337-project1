@@ -5,6 +5,7 @@ import nltk
 from imdb import IMDb
 ia = IMDb()
 import pickle
+import string
 
 actors = {}
 with open('actors.pickle', 'rb') as handle:
@@ -27,6 +28,10 @@ def proper_noun_check(noun_type,noun):
   #   return True
   else:
     return None
+
+def trimPunc(arg_str):
+  translator = str.maketrans('', '', string.punctuation)
+  return arg_str.translate(translator)
 
 def parseTweet(tweet):
     bad_characters = ['.','-','_','&','~',',', '\\','?','!',';']
