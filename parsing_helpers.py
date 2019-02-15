@@ -2,6 +2,36 @@
 import re
 import unicodedata
 import nltk
+from imdb import IMDb
+ia = IMDb()
+import pickle
+import string
+
+actors = {}
+with open('actors.pickle', 'rb') as handle:
+    actors = pickle.load(handle)
+
+movies = {}
+with open('movies.pickle', 'rb') as handle:
+    movies = pickle.load(handle)
+
+def uniToAscii(uni_str):
+  return unicodedata.normalize('NFKD', uni_str).encode('ascii','ignore')
+
+def proper_noun_check(noun_type,noun):
+  if noun_type == 'art':
+    #flip it
+    return not noun in actors
+  elif noun_type == 'person':
+    return not noun in movies
+  # elif noun_type == 'pass':
+  #   return True
+  else:
+    return None
+
+def trimPunc(arg_str):
+  translator = str.maketrans('', '', string.punctuation)
+  return arg_str.translate(translator)
 
 def parseTweet(tweet):
     bad_characters = ['.','-','_','&','~',',', '\\','?','!',';']

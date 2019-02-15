@@ -33,11 +33,10 @@ def buildAwards(categories,rawData):
         awards.append(new_award)
     return awards
 
-def main():
-	
+def main(data_file_name):
+
     #Parameters
     now = time.time()
-    data_file_name = 'gg2013.json'
     categories_file_name = 'givencategories.csv'
 
     #Variables
