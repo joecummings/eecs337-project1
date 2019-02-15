@@ -69,8 +69,6 @@ class Award(object):
         self.nominees = []
         if 'host'in name or 'actor' in name or 'actress' in name or 'director' in name or 'score' in name:
             self.noun_type = 'person'
-        # elif 'television' in name or 'tv' in name or 'supporting' in name:
-        #     self.noun_type = 'pass'
         else:
             self.noun_type = 'art'
 
@@ -98,8 +96,6 @@ class Award(object):
         relevavantBool = True
         delimiter = ','
 
-
-
         for local_or_string in self.include:
 
             if not relevavantBool:
@@ -108,16 +104,7 @@ class Award(object):
             localBool = False
             for word in local_or_string.split(delimiter):
 
-                # if 'Anne Hathaway' in tweet:
-                #     print(tweet)
-                #     pdb.set_trace()
-
                 if word in tweet:
-                        # pdb.set_trace()
-
-                    # if self.name == 'best performance by an actress in a supporting role in a motion picture':
-                        
-
                     localBool = True
                     break
             
@@ -130,13 +117,6 @@ class Award(object):
 
             localBool = False
             for word in local_or_string.split(delimiter):
-
-                # if self.name == 'best performance by an actress in a supporting role in a motion picture':
-                #     if word != 'rt':
-                #         print(word)
-                #         print(tweet)
-                #         print(word not in tweet)
-                #         pdb.set_trace()
 
                 if word not in tweet:
                     localBool = True
@@ -173,9 +153,6 @@ class Award(object):
                 currNoun = ''
         return retList
 
-    # def mostCommon(self,lst):
-    #     return max(set(lst), key=lst.count)
-
     def getResults(self):
 
         c = Counter(self.tweetsToNouns(self.relevant_tweets))
@@ -193,15 +170,9 @@ class Award(object):
             except:
                 break
 
-        if self.name == 'best performance by an actress in a supporting role in a motion picture':
-            for tweet in self.relevant_tweets:
-                print(tweet)
-            # pdb.set_trace()
-
-        # print(five_most_common)
-        # print(exclude_dict['supporting'])
-        # print(self.name)
-        # pdb.set_trace()
+        print(five_most_common)
+        print(self.name)
+        print('winner above')
 
         try:
             self.results['nominees'] = five_most_common
@@ -214,6 +185,46 @@ class Award(object):
 
             if self.noun_type == 'person':
                 exclude_dict['supporting'].append(winner)
-
         except:
             self.results['winner'] = 'Larry Birmbaum'
+
+        #Presenters Code
+        self.include = ['present,presents,presenting']
+        self.exclude = []
+        old_relevant_tweets = self.relevant_tweets
+        self.relevant_tweets = []
+        for tweet in old_relevant_tweets:
+            self.relevantHa(tweet)
+
+        c = Counter(self.tweetsToNouns(self.relevant_tweets))
+        nounsAndCounts = [(key,pair) for key,pair in c.items()]
+        nounsAndCounts.sort(key=lambda x: -x[1])
+
+        five_most_common = []
+        i = 0 
+        while len(five_most_common) < 5:
+            try:
+                name = nounsAndCounts[i][0]
+                if proper_noun_check('person',name):
+                    five_most_common.append(name)
+                i += 1
+            except:
+                break
+
+        try:
+            winner = five_most_common[0]
+            self.results['presenters'] = five_most_common[0]
+
+        except:
+            self.results['winner'] = 'Jason Cohn'
+
+        # print(self.relevant_tweets)
+        # print(five_most_common)
+        # print(self.name)
+        # print('presenter above')
+        # pdb.set_trace()
+
+
+
+
+        
