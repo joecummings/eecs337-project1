@@ -173,8 +173,8 @@ class Award(object):
                 currNoun = ''
         return retList
 
-    # def mostCommon(self,lst):
-    #     return max(set(lst), key=lst.count)
+    def mostCommon(self,lst):
+        return max(set(lst), key=lst.count)
 
     def getResults(self):
 
