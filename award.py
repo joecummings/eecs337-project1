@@ -1,6 +1,7 @@
 import re
 from collections import Counter
 from parsing_helpers import lToD, proper_noun_check
+import pdb
 
 class Award(object):
 
@@ -15,8 +16,10 @@ class Award(object):
         self.stop_words = ['tv','tvs','congratulations','need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
         self.winner = ''
         self.nominees = []
-        if 'actor' in name or 'actress' in name or 'director' in name or 'score' in name:
+        if 'host'in name or 'actor' in name or 'actress' in name or 'director' in name or 'score' in name:
             self.noun_type = 'person'
+        # elif 'television' in name or 'tv' in name or 'supporting' in name:
+        #     self.noun_type = 'pass'
         else:
             self.noun_type = 'art'
 
@@ -156,13 +159,16 @@ class Award(object):
         c = Counter(self.tweetsToNouns(self.relevant_tweets))
         nounsAndCounts = [(key,pair) for key,pair in c.items()]
         nounsAndCounts.sort(key=lambda x: -x[1])
+
         five_most_common = []
 
         i = 0 
         while len(five_most_common) < 5:
             try:
                 name = nounsAndCounts[i][0]
+                # print(name)
                 if proper_noun_check(self.noun_type,name):
+                    # print(name)
                     five_most_common.append(name)
                 i += 1
             except:

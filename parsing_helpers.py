@@ -4,23 +4,28 @@ import unicodedata
 import nltk
 from imdb import IMDb
 ia = IMDb()
+import pickle
+
+actors = {}
+with open('actors.pickle', 'rb') as handle:
+    actors = pickle.load(handle)
+
+movies = {}
+with open('movies.pickle', 'rb') as handle:
+    movies = pickle.load(handle)
 
 def uniToAscii(uni_str):
   return unicodedata.normalize('NFKD', uni_str).encode('ascii','ignore')
 
 def proper_noun_check(noun_type,noun):
   if noun_type == 'art':
-    try:
-      return noun == str(ia.search_movie(noun)[0]).lower()
-    except:
-      return False
+    #flip it
+    return not noun in actors
   elif noun_type == 'person':
-    try:
-      return noun == str(ia.search_person(noun)[0]).lower()
-    except:
-      return False
+    return not noun in movies
+  # elif noun_type == 'pass':
+  #   return True
   else:
-    print('YOU MORON CALL THIS FUNCTION RIGHT')
     return None
 
 def parseTweet(tweet):
