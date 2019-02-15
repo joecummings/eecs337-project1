@@ -153,6 +153,10 @@ class Award(object):
                 currNoun = ''
         return retList
 
+    def mostCommon(self,lst):
+        return max(set(lst), key=lst.count)
+
+
     def getResults(self):
 
         c = Counter(self.tweetsToNouns(self.relevant_tweets))
