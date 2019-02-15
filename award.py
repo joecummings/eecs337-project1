@@ -170,9 +170,9 @@ class Award(object):
             except:
                 break
 
-        print(five_most_common)
-        print(self.name)
-        print('winner above')
+        # print(five_most_common)
+        # print(self.name)
+        # print('winner above')
 
         try:
             self.results['nominees'] = five_most_common
@@ -216,7 +216,7 @@ class Award(object):
             self.results['presenters'] = five_most_common[0]
 
         except:
-            self.results['winner'] = 'Jason Cohn'
+            self.results['presenters'] = 'Jason Cohn'
 
         # print(self.relevant_tweets)
         # print(five_most_common)
