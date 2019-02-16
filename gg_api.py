@@ -2,6 +2,7 @@
 import data
 import json
 import unicodedata
+import time
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama',
     'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
@@ -93,7 +94,7 @@ def pre_ceremony():
     import pickle
 
     #GRABS EVERY ACTOR/ACTRESS/DIRECTOR IN EVERY MOVIE SINCE 2012
-    print('SET YEAR IN PRE_CEREMONY') #this can edit the query! with year.... very nice :)
+    #print('SET YEAR IN PRE_CEREMONY') #this can edit the query! with year.... very nice :)
 
     query = '''PREFIX wikibase: <http://wikiba.se/ontology#>
     PREFIX wd: <http://www.wikidata.org/entity/>
@@ -142,12 +143,18 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
     what it returns.'''
-    for year in ['2013','2015']:
-        data_file_name = 'gg'+year+'.json'
-        results[year] = data.main(data_file_name)
+    now = time.time()
+
+    # for year in ['2013','2015']:
+    for year in ['2013']:
+        results[year] = data.main(year)
     
     with open('results.json', 'w') as fp:
         json.dump(results, fp)
+
+    
+    print(time.time() - now)
+    print("------------------------------")
 
     return
 
