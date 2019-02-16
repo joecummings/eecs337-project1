@@ -145,8 +145,8 @@ def main():
     what it returns.'''
     now = time.time()
 
-    # for year in ['2013','2015']:
-    for year in ['2013']:
+    for year in ['2013','2015']:
+    # for year in ['2013']:
         results[year] = data.main(year)
     
     with open('results.json', 'w') as fp:
