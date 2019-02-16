@@ -26,18 +26,18 @@ def buildAwards(categories,rawData):
     for category in categories:
         new_award = Award(category)
         for tweetDict in rawData:
-            tweet = tweetDict['text']
+            #tweet = tweetDict['text']
             tweet = parseTweet(tweetDict['text'])
             new_award.relevantHa(tweet)
         new_award.getResults()
         awards.append(new_award)
     return awards
 
-def main(data_file_name):
+def main(year):
 
     #Parameters
-    now = time.time()
     categories_file_name = 'givencategories.csv'
+    data_file_name = 'gg'+year+'.json'
 
     #Variables
     awards = list()
@@ -51,7 +51,9 @@ def main(data_file_name):
 
     #Part 1 - Host of Ceremony
     awards = buildAwards(['host'],rawData)
-    results['hosts'] = awards[0].results['winner']
+    results['hosts'] = list()
+    results['hosts'].append(awards[0].results['nominees'][0])
+    results['hosts'].append(awards[0].results['nominees'][1])
     awards = []
 
     #Part 2 - Awards / Categories
@@ -78,7 +80,8 @@ def main(data_file_name):
         new_award = Award(p)
         for tweetDict in rawData:
             new_award.relevantHa(p)# was (tweet)
-        #print (new_award.getResults())
+        
+        new_award.getResults()
 
         awardCeremonyYear = '2013'
         keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
@@ -88,14 +91,14 @@ def main(data_file_name):
 	 		"limit": 1
 	 	}
         paths = response.download(arguments) 
-        Image.open(paths[keywords][0]).show()
+        #Image.open(paths[keywords][0]).show()
 
-    for a in ['controversial runner-up', 'crowd favorite presentation', 'best after party']:
-        new_award = Award(a)
-        for tweetDict in rawData:
-            new_award.relevantHa(a)
-        #print (new_award.getResults())
-        #results['award_data'][a]['winner'] = award.results['winner']
+    # for a in ['controversial runner-up', 'crowd favorite presentation', 'best after party']:
+    #     new_award = Award(a)
+    #     for tweetDict in rawData:
+    #         new_award.relevantHa(a)
+    #     new_award.getResults()
+    #     results['award_data'][a]['winner'] = award.results['winner']
 
     return results
 
