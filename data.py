@@ -9,6 +9,7 @@ from google_images_download import google_images_download
 import csv
 import pprint
 import pickle
+import pandas as pd
 
 def buildAwards(categories,rawData):
     awards = []
@@ -64,6 +65,12 @@ def main(year):
         pickle.dump(bl, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
     pprint.pprint(results,depth=3)
+    df = pd.DataFrame(data=results['award_data']).T
+    pd.set_option('max_colwidth',80)
+    with open(f'output_{year}.html', 'w') as o:
+        o.write(f'<h2>Golden Globes: {year}</h2>')
+        o.write(df.to_html())
+        o.close()
 	
     #Part 6 Extra Awards  
     extras = ['best dressed','worst dressed','funniest'] #,'controversial runner-up', 'crowd favorite presentation', 'best after party']
