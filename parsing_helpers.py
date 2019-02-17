@@ -18,14 +18,20 @@ with open('movies.pickle', 'rb') as handle:
 def uniToAscii(uni_str):
   return unicodedata.normalize('NFKD', uni_str).encode('ascii','ignore')
 
-def proper_noun_check(noun_type,noun):
+def proper_noun_check_winner(noun_type,noun):
   if noun_type == 'art':
-    #flip it
+    #flipped
     return not noun in actors
   elif noun_type == 'person':
     return not noun in movies
-  # elif noun_type == 'pass':
-  #   return True
+  else:
+    return None
+
+def proper_noun_check_nominees(noun_type,noun):
+  if noun_type == 'art':
+    return noun in movies
+  elif noun_type == 'person':
+    return noun in actors
   else:
     return None
 

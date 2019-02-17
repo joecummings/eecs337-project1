@@ -3,6 +3,8 @@ import data
 import json
 import unicodedata
 import time
+import requests
+import pickle
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama',
     'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
@@ -14,6 +16,8 @@ try:
         results = json.load(fp)
 except Exception:
     results = {}
+
+awards = {}
 
 
 def get_hosts(year):
@@ -27,8 +31,9 @@ def get_hosts(year):
 def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
-    
-    awards = []
+    with open('bl' + year + '.pickle', 'rb') as handle:
+        awards = pickle.load(handle)
+    print(awards)
     return awards
 
 def get_nominees(year):
@@ -90,8 +95,6 @@ def pre_ceremony():
     # Your code here
     
     #Part 1
-    import requests
-    import pickle
 
     #GRABS EVERY ACTOR/ACTRESS/DIRECTOR IN EVERY MOVIE SINCE 2012
     #print('SET YEAR IN PRE_CEREMONY') #this can edit the query! with year.... very nice :)
@@ -145,8 +148,9 @@ def main():
     what it returns.'''
     now = time.time()
 
-    for year in ['2013','2015']:
-    # for year in ['2013']:
+    # for year in ['2013','2015']:
+    print('CHANGE GG_API.PY YEAR BACK')
+    for year in ['2013']:
         results[year] = data.main(year)
     
     with open('results.json', 'w') as fp:

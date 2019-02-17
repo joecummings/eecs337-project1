@@ -8,6 +8,7 @@ from PIL import Image
 from google_images_download import google_images_download 
 import csv
 import pprint
+import pickle
 
 
 #might want to include host in here?
@@ -56,8 +57,6 @@ def main(year):
     results['hosts'].append(awards[0].results['nominees'][1])
     awards = []
 
-    #Part 2 - Awards / Categories
-    pass
     
     #Parts 3-5 -  Built in Categories
     with open(categories_file_name, newline='\n') as f:
@@ -67,38 +66,31 @@ def main(year):
         results['award_data'][award.name] = {}
         for t in types:
             results['award_data'][award.name][t] = award.results[t]
+
+    #Part 2 - Awards / Categories
+    c = Counter(best_list)
+    bl = c.most_common(min(30,len(best_list)))
+    bl = [ noun for noun,count in bl]
+    with open('bl' +year+ '.pickle', 'wb') as handle:
+        pickle.dump(bl, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    # nouns_and_counts = [(key,value) for key,value in c]
+    # nouns_and_counts.sort(lambda x: -x[1])
+    
     
     pprint.pprint(results,depth=3)
 	
     #Part 6 Extra Awards  
-    
-
-    #below was commented out
-
-    for p in ['Best Dressed','Worst Dressed']: #, 'controversial runner-up','crowd favorite presentation', 'best after party']:  
-
-        new_award = Award(p)
-        for tweetDict in rawData:
-            new_award.relevantHa(p)# was (tweet)
-        
-        new_award.getResults()
-
-        awardCeremonyYear = year
-        keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
+    extras = ['best dressed','worst dressed','controversial','funniest'] #,'controversial runner-up', 'crowd favorite presentation', 'best after party']
+    awards = buildAwards(extras,rawData)
+    for new_award in awards:
+        keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ year
         response = google_images_download.googleimagesdownload()
         arguments = {
 	 		"keywords": keywords,
 	 		"limit": 1
 	 	}
         paths = response.download(arguments) 
-        #Image.open(paths[keywords][0]).show()
-
-    # for a in ['controversial runner-up', 'crowd favorite presentation', 'best after party']:
-    #     new_award = Award(a)
-    #     for tweetDict in rawData:
-    #         new_award.relevantHa(a)
-    #     new_award.getResults()
-    #     results['award_data'][a]['winner'] = award.results['winner']
+    awards = []
 
     return results
 
