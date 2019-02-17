@@ -26,8 +26,8 @@ def buildAwards(categories,rawData):
     for category in categories:
         new_award = Award(category)
         for tweetDict in rawData:
-            #tweet = tweetDict['text']
-            tweet = parseTweet(tweetDict['text'])
+            tweet = tweetDict['text']
+            # tweet = parseTweet(tweetDict['text'])
             new_award.relevantHa(tweet)
         new_award.getResults()
         awards.append(new_award)
@@ -83,7 +83,7 @@ def main(year):
         
         new_award.getResults()
 
-        awardCeremonyYear = '2013'
+        awardCeremonyYear = year
         keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
         response = google_images_download.googleimagesdownload()
         arguments = {
