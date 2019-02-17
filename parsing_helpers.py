@@ -7,7 +7,6 @@ ia = IMDb()
 import pickle
 import string
 import re
-import pdb
 
 actors = {}
 with open('actors.pickle', 'rb') as handle:

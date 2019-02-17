@@ -5,7 +5,6 @@ import unicodedata
 import time
 import requests
 import pickle
-import pdb
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama',
     'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
@@ -196,8 +195,6 @@ def pre_ceremony():
     for record in data2019['results']['bindings']:
         movies['2019'][remove_accents(record['filmLabel']['value'].lower())] = True
         actors['2019'][remove_accents(record['actorLabel']['value'].lower())] = True
-
-    pdb.set_trace()
 
     with open('movies.pickle', 'wb') as handle:
         pickle.dump(movies, handle, protocol=pickle.HIGHEST_PROTOCOL)
