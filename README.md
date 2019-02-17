@@ -1,2 +1,2 @@
-# gg-project-master
-Golden Globe Project Master
+# gg-project
+Golden Globe Project 
