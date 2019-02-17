@@ -33,11 +33,11 @@ def buildAwards(categories,rawData):
         awards.append(new_award)
     return awards
 
-def main(data_file_name):
+def main(year):
 
     #Parameters
-    now = time.time()
     categories_file_name = 'givencategories.csv'
+    data_file_name = 'gg'+year+'.json'
 
     #Variables
     awards = list()
@@ -51,12 +51,14 @@ def main(data_file_name):
 
     #Part 1 - Host of Ceremony
     awards = buildAwards(['host'],rawData)
-    results['hosts'] = awards[0].results['winner']
+    results['hosts'] = list()
+    results['hosts'].append(awards[0].results['nominees'][0])
+    results['hosts'].append(awards[0].results['nominees'][1])
     awards = []
 
     #Part 2 - Awards / Categories
     pass
-
+    
     #Parts 3-5 -  Built in Categories
     with open(categories_file_name, newline='\n') as f:
         categories = list(csv.reader(f))[0]
@@ -66,25 +68,37 @@ def main(data_file_name):
         for t in types:
             results['award_data'][award.name][t] = award.results[t]
     
-    print(time.time() - now)
     pprint.pprint(results,depth=3)
+	
+    #Part 6 Extra Awards  
+    
 
-    # for p in ['Best Dressed','Worst Dressed']:
+    #below was commented out
 
-    #     new_award = Award(p)
+    for p in ['Best Dressed','Worst Dressed']: #, 'controversial runner-up','crowd favorite presentation', 'best after party']:  
+
+        new_award = Award(p)
+        for tweetDict in rawData:
+            new_award.relevantHa(p)# was (tweet)
+        
+        new_award.getResults()
+
+        awardCeremonyYear = year
+        keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
+        response = google_images_download.googleimagesdownload()
+        arguments = {
+	 		"keywords": keywords,
+	 		"limit": 1
+	 	}
+        paths = response.download(arguments) 
+        #Image.open(paths[keywords][0]).show()
+
+    # for a in ['controversial runner-up', 'crowd favorite presentation', 'best after party']:
+    #     new_award = Award(a)
     #     for tweetDict in rawData:
-    #         new_award.relevantHa(tweet)
+    #         new_award.relevantHa(a)
     #     new_award.getResults()
-
-    #     awardCeremonyYear = '2013'
-    #     keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ awardCeremonyYear
-    #     response = google_images_download.googleimagesdownload()
-    #     arguments = {
-	# 		"keywords": keywords,
-	# 		"limit": 1
-	# 	}
-    #     paths = response.download(arguments) 
-    #     Image.open(paths[keywords][0]).show()
+    #     results['award_data'][a]['winner'] = award.results['winner']
 
     return results
 
