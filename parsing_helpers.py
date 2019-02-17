@@ -20,22 +20,22 @@ with open('movies.pickle', 'rb') as handle:
 def uniToAscii(uni_str):
   return unicodedata.normalize('NFKD', uni_str).encode('ascii','ignore')
 
-def proper_noun_check_winner(noun_type,noun):
+def proper_noun_check_winner(noun_type,noun,year):
   if noun_type == 'art':
     #flipped
-    return not noun in actors
+    return not noun in actors[year]
   elif noun_type == 'music':
     return trimPunc(noun) == noun
   elif noun_type == 'person':
-    return not noun in movies
+    return not noun in movies[year]
   else:
     return None
 
-def proper_noun_check_nominees(noun_type,noun):
+def proper_noun_check_nominees(noun_type,noun,year):
   if noun_type == 'art':
-    return noun in movies
+    return noun in movies[year]
   elif noun_type == 'person':
-    return noun in actors
+    return noun in actors[year]
   else:
     return None
 

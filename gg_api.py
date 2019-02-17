@@ -5,6 +5,7 @@ import unicodedata
 import time
 import requests
 import pickle
+import pdb
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama',
     'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
@@ -99,7 +100,7 @@ def pre_ceremony():
     #GRABS EVERY ACTOR/ACTRESS/DIRECTOR IN EVERY MOVIE SINCE 2012
     #print('SET YEAR IN PRE_CEREMONY') #this can edit the query! with year.... very nice :)
 
-    query = '''PREFIX wikibase: <http://wikiba.se/ontology#>
+    query2013 = '''PREFIX wikibase: <http://wikiba.se/ontology#>
     PREFIX wd: <http://www.wikidata.org/entity/>
     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -111,19 +112,92 @@ def pre_ceremony():
         ?cast wdt:P373 ?actor.
         ?film wdt:P577 ?date.
         ?film wdt:P57 ?director
-        FILTER("2012-01-01"^^xsd:dateTime <= ?date && ?date < "2019-01-01"^^xsd:dateTime).
+        FILTER("2013-01-01"^^xsd:dateTime <= ?date && ?date < "2013-12-31"^^xsd:dateTime).
     }
     LIMIT 100000
     '''
     url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
-    data = requests.get(url, params={'query': query, 'format': 'json'}).json()
+    data2013 = requests.get(url, params={'query': query2013, 'format': 'json'}).json()
 
+    query2015 = '''PREFIX wikibase: <http://wikiba.se/ontology#>
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    
+    SELECT DISTINCT ?filmLabel ?directorLabel ?actorLabel  WHERE {
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+        ?film wdt:P31 wd:Q11424.
+        ?film wdt:P161 ?cast.
+        ?cast wdt:P373 ?actor.
+        ?film wdt:P577 ?date.
+        ?film wdt:P57 ?director
+        FILTER("2015-01-01"^^xsd:dateTime <= ?date && ?date < "2015-12-31"^^xsd:dateTime).
+    }
+    LIMIT 100000
+    '''
+    url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
+    data2015 = requests.get(url, params={'query': query2015, 'format': 'json'}).json()
 
-    movies = {}
-    actors = {}
-    for record in data['results']['bindings']:
-        movies[remove_accents(record['filmLabel']['value'].lower())] = True
-        actors[remove_accents(record['actorLabel']['value'].lower())] = True
+    query2018 = '''PREFIX wikibase: <http://wikiba.se/ontology#>
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    
+    SELECT DISTINCT ?filmLabel ?directorLabel ?actorLabel  WHERE {
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+        ?film wdt:P31 wd:Q11424.
+        ?film wdt:P161 ?cast.
+        ?cast wdt:P373 ?actor.
+        ?film wdt:P577 ?date.
+        ?film wdt:P57 ?director
+        FILTER("2018-01-01"^^xsd:dateTime <= ?date && ?date < "2018-12-31"^^xsd:dateTime).
+    }
+    LIMIT 100000
+    '''
+    url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
+    data2018 = requests.get(url, params={'query': query2018, 'format': 'json'}).json()
+
+    query2019 = '''PREFIX wikibase: <http://wikiba.se/ontology#>
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    
+    SELECT DISTINCT ?filmLabel ?directorLabel ?actorLabel  WHERE {
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+        ?film wdt:P31 wd:Q11424.
+        ?film wdt:P161 ?cast.
+        ?cast wdt:P373 ?actor.
+        ?film wdt:P577 ?date.
+        ?film wdt:P57 ?director
+        FILTER("2019-01-01"^^xsd:dateTime <= ?date && ?date < "2019-12-31"^^xsd:dateTime).
+    }
+    LIMIT 100000
+    '''
+    url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
+    data2019 = requests.get(url, params={'query': query2019, 'format': 'json'}).json()
+
+    movies = {'2013':{},
+              '2015':{},
+              '2018':{},
+              '2019':{}}
+    actors = {'2013':{},
+              '2015':{},
+              '2018':{},
+              '2019':{}}
+    for record in data2013['results']['bindings']:
+        movies['2013'][remove_accents(record['filmLabel']['value'].lower())] = True
+        actors['2013'][remove_accents(record['actorLabel']['value'].lower())] = True
+    for record in data2015['results']['bindings']:
+        movies['2015'][remove_accents(record['filmLabel']['value'].lower())] = True
+        actors['2015'][remove_accents(record['actorLabel']['value'].lower())] = True
+    for record in data2018['results']['bindings']:
+        movies['2018'][remove_accents(record['filmLabel']['value'].lower())] = True
+        actors['2018'][remove_accents(record['actorLabel']['value'].lower())] = True
+    for record in data2019['results']['bindings']:
+        movies['2019'][remove_accents(record['filmLabel']['value'].lower())] = True
+        actors['2019'][remove_accents(record['actorLabel']['value'].lower())] = True
+
+    pdb.set_trace()
 
     with open('movies.pickle', 'wb') as handle:
         pickle.dump(movies, handle, protocol=pickle.HIGHEST_PROTOCOL)

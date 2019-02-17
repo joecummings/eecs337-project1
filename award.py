@@ -55,8 +55,9 @@ include_dict = {
 
 class Award(object):
 
-    def __init__(self, name):
+    def __init__(self, name, year):
         self.name = name
+        self.year = year
         self.include, self.exclude = self.generateIncludeExclude()
         self.relevant_tweets = list()
         self.results = {'presenters':[],
@@ -174,7 +175,7 @@ class Award(object):
         while len(five_most_common) < 1:
             try:
                 name = nounsAndCounts[i][0]
-                if proper_noun_check_winner(self.noun_type,name):
+                if proper_noun_check_winner(self.noun_type,name, self.year):
                     five_most_common.append(name)
                 i += 1
             except:
@@ -183,7 +184,7 @@ class Award(object):
         while len(five_most_common) < 5:
             try:
                 name = nounsAndCounts[i][0]
-                if proper_noun_check_nominees(self.noun_type,name):
+                if proper_noun_check_nominees(self.noun_type,name, self.year):
                     five_most_common.append(name)
                 i += 1
             except:
@@ -236,7 +237,7 @@ class Award(object):
         while len(five_most_common) < 1:
             try:
                 name = nounsAndCounts[i][0]
-                if proper_noun_check_winner(self.noun_type,name):
+                if proper_noun_check_winner(self.noun_type,name, self.year):
                     five_most_common.append(name)
                 i += 1
             except:
