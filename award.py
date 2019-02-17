@@ -1,16 +1,6 @@
 import re
 from collections import Counter
 from parsing_helpers import lToD, proper_noun_check_winner,proper_noun_check_nominees, trimPunc
-import pdb
-
-#for Ryan's extras
-#controversial runner up
-#funniest acceptance speech
-#crowd favorite presentation speech
-# 'support': 'daniel',
-# 'supporti':'hugh jackman',
-# 'supportin': 'jessica chastain',
-# 'supporting': 'jennifer lawrence',
 
 best_list = []
 
@@ -206,19 +196,6 @@ class Award(object):
         except:
             self.results['winner'] = 'Larry Birmbaum'
 
-        # print(self.relevant_tweets)
-        # print(nounsAndCounts)
-        # print(five_most_common)
-        # print(self.name)
-        # print('--------')
-        # pdb.set_trace()
-
-        # c = Counter(best_list)
-        # nounsAndCounts = [(key,pair) for key,pair in c.items()]
-        # nounsAndCounts.sort(key=lambda x: x[1])
-        # print(nounsAndCounts)
-        # pdb.set_trace()
-
         #Presenters Code
         self.include = ['present,presents,presenting']
         self.exclude = []
@@ -250,11 +227,6 @@ class Award(object):
         except:
             self.results['presenters'] = 'Jason Cohn'
 
-        # print(self.relevant_tweets)
-        # print(five_most_common)
-        # print(self.name)
-        # print('presenter above')
-        # pdb.set_trace()
 
 
 
