@@ -6,6 +6,8 @@ from imdb import IMDb
 ia = IMDb()
 import pickle
 import string
+import re
+import pdb
 
 actors = {}
 with open('actors.pickle', 'rb') as handle:
@@ -22,6 +24,8 @@ def proper_noun_check_winner(noun_type,noun):
   if noun_type == 'art':
     #flipped
     return not noun in actors
+  elif noun_type == 'music':
+    return trimPunc(noun) == noun
   elif noun_type == 'person':
     return not noun in movies
   else:

@@ -33,7 +33,7 @@ def get_awards(year):
     of this function or what it returns.'''
     with open('bl' + year + '.pickle', 'rb') as handle:
         awards = pickle.load(handle)
-    print(awards)
+
     return awards
 
 def get_nominees(year):
@@ -148,9 +148,9 @@ def main():
     what it returns.'''
     now = time.time()
 
-    # for year in ['2013','2015']:
-    print('CHANGE GG_API.PY YEAR BACK')
-    for year in ['2013']:
+    for year in ['2013','2015', '2018', '2019']:
+    # print('CHANGE GG_API.PY YEAR BACK')
+    # for year in ['2013']:
         results[year] = data.main(year)
     
     with open('results.json', 'w') as fp:
