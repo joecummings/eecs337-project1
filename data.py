@@ -11,10 +11,10 @@ import pprint
 import pickle
 import pandas as pd
 
-def buildAwards(categories,rawData):
+def buildAwards(categories,rawData, year):
     awards = []
     for category in categories:
-        new_award = Award(category)
+        new_award = Award(category,year)
         for tweetDict in rawData:
             tweet = tweetDict['text']
             new_award.relevantHa(tweet)
@@ -38,18 +38,19 @@ def main(year):
     try:
         with open(data_file_name) as data_file:
             rawData = json.load(data_file)
-    except ValueError:
+    except IOError:
         print('file not found')
+        return
 
     #Part 1 - Host of Ceremony
-    awards = buildAwards(['host'],rawData)
+    awards = buildAwards(['host'],rawData, year)
     results['hosts'] = list()
     results['hosts'].append(awards[0].results['nominees'][0])
     results['hosts'].append(awards[0].results['nominees'][1])
     awards = []
 
     #Part 2 - Awards / Categories - Intentionally Done Out of Order for processing time.
-    awards = buildAwards(['best'],rawData)
+    awards = buildAwards(['best'],rawData, year)
     c = Counter(best_list)
     bl = c.most_common(min(30,len(best_list)))
     bl = [ noun for noun,count in bl]
@@ -60,7 +61,7 @@ def main(year):
     #Parts 3-5 -  Built in Categories
     with open(categories_file_name, newline='\n') as f:
         categories = list(csv.reader(f))[0]
-    awards = buildAwards(categories,rawData)
+    awards = buildAwards(categories,rawData, year)
     for award in awards:
         results['award_data'][award.name] = {}
         for t in types:
@@ -76,7 +77,7 @@ def main(year):
 	
     #Part 6 Extra Awards  
     extras = ['best dressed','worst dressed','funniest'] #,'controversial runner-up', 'crowd favorite presentation', 'best after party']
-    awards = buildAwards(extras,rawData)
+    awards = buildAwards(extras,rawData, year)
     for new_award in awards:
         keywords = new_award.results['winner'] + ' ' + new_award.name + ' '+ year
         response = google_images_download.googleimagesdownload()
