@@ -1,5 +1,4 @@
 # Golden Globes Project
-***
 
 ##### To Run
 `bash main.sh`
