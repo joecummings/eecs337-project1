@@ -15,4 +15,4 @@ $py autograder.py
 
 rm givencategories.csv
 
-echo 'Done!'
+echo 'Done! - Check the downloads folder for photos of the funniest, best dressed, and worst dressed'

@@ -16,19 +16,13 @@ best_list = []
 
 exclude_dict = {
     'supporting': [],
-    'motion': ['mini-series','mini series','miniseries','limited series'],
-    'picture': ['mini-series','mini series','miniseries','limited series'],
+    'picture -': ['mini-series','mini series','miniseries','limited series'],
     'series': ['movie,motion,picture'],
     'foreign': ['press'],
     'actor':['actress,actriz'],
     'actress':['actor'],
     'host':['rt']
 }
-# funniest acceptance speech this could very well just return the best presentation speech if there is a blowout like ferrell's
-#'funniest acceptance speech' : 'funny, lol, best, speech, accepting' ,
-#crowd's favoritie presentation speech
-#Most controversial runner-up (cally version)
-##Hacky
 include_dict = {
     'funniest': ['funniest,funny,hilarious'],
     'controversial': ['controversial'],
@@ -40,11 +34,11 @@ include_dict = {
     'controversial runner-up' : ['robbed,stole,cheated,unfair,shocker'],
     'crowd favorite presentation' : ['presented,speech,presenting,amazing'],
     'best after party' : ['afterparty,party'],
-    'limited series': ['mini-series for,mini series for,miniseries for,limited series for,for television,for tv,for t.v.'],
-    'for television': ['mini-series for,mini series for,miniseries for,limited series for,for television, for tv,for t.v.'],
+    'limited series': ['mini-series,mini series for,miniseries,limited series'],
+    'for television': ['mini-series,mini series for,miniseries,limited series'],
     'television': ['tv,television,tele,t.v.'],
     'song': ['song'],
-    'score': ['score,composer'], #do not fucking say music
+    'score': ['score,composer'],
     'language': ['foreign,language'],
     'foreign': ['foreign,language'],
     'animated': ['anime,animated,animate,cartoon'],
@@ -72,7 +66,9 @@ class Award(object):
         self.stop_words = ['tv','tvs','congratulations','need','very','by','a','an','in','best','golden','globe','goldenglobe','golden globe','golden globes','', 'tv', 'rt','i','the']
         self.winner = ''
         self.nominees = []
-        if 'funniest' in name or 'controversial' in name or 'dressed' in name or 'host' in name or 'actor' in name or 'actress' in name or 'director' in name or 'score' in name:
+        if 'score' in name:
+            self.noun_type = 'music'
+        elif 'cecil' in name or 'funniest' in name or 'controversial' in name or 'dressed' in name or 'host' in name or 'actor' in name or 'actress' in name or 'director' in name or 'score' in name:
             self.noun_type = 'person'
         else:
             self.noun_type = 'art'
@@ -195,6 +191,8 @@ class Award(object):
 
         try:
             self.results['nominees'] = five_most_common
+            if 'cecil' in self.name:
+                self.results['nominees'] = []
         except:
             self.results['nominees'] = []
 
@@ -212,6 +210,7 @@ class Award(object):
         # print(five_most_common)
         # print(self.name)
         # print('--------')
+        # pdb.set_trace()
 
         # c = Counter(best_list)
         # nounsAndCounts = [(key,pair) for key,pair in c.items()]
