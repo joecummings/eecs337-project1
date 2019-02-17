@@ -48,6 +48,15 @@ def main(year):
     results['hosts'].append(awards[0].results['nominees'][1])
     awards = []
 
+    #Part 2 - Awards / Categories - Intentionally Done Out of Order for processing time.
+    awards = buildAwards(['best'],rawData)
+    c = Counter(best_list)
+    bl = c.most_common(min(30,len(best_list)))
+    bl = [ noun for noun,count in bl]
+    with open('bl' +year+ '.pickle', 'wb') as handle:
+        pickle.dump(bl, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    awards = []
+
     #Parts 3-5 -  Built in Categories
     with open(categories_file_name, newline='\n') as f:
         categories = list(csv.reader(f))[0]
@@ -56,13 +65,6 @@ def main(year):
         results['award_data'][award.name] = {}
         for t in types:
             results['award_data'][award.name][t] = award.results[t]
-
-    #Part 2 - Awards / Categories - Intentionally Done Out of Order for processing time.
-    c = Counter(best_list)
-    bl = c.most_common(min(30,len(best_list)))
-    bl = [ noun for noun,count in bl]
-    with open('bl' +year+ '.pickle', 'wb') as handle:
-        pickle.dump(bl, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
     pprint.pprint(results,depth=3)
     df = pd.DataFrame(data=results['award_data']).T
